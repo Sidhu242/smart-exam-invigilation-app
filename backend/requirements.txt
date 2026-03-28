@@ -1,5 +1,6 @@
 Flask
 flask-cors
+flask-sock
 opencv-python
 numpy
 torch
@@ -7,3 +8,4 @@ torchvision
 sounddevice
 scipy
 python-dotenv
+gunicorn

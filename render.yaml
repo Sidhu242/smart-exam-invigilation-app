@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: seis-backend
+    env: docker
+    rootDir: backend
+    plan: free # Change this to standard if free tier fails with memory limits due to torch
+    dockerContext: .
+    healthCheckPath: /debug_exams
