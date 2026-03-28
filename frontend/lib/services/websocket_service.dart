@@ -10,7 +10,7 @@ class WebSocketService with ChangeNotifier {
 
   void connect(int examId) {
     _channel = WebSocketChannel.connect(
-      Uri.parse('ws://localhost:8000/ws/flags/$examId'),
+      Uri.parse('ws://localhost:5000/ws/flags/$examId'),
     );
     _channel!.stream.listen((event) {
       final data = jsonDecode(event);

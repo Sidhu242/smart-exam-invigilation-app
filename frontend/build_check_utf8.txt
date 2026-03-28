@@ -1,0 +1,1806 @@
+﻿Compiling lib\main.dart for the Web...                          
+flutter : Warning: In index.html:21: 
+Local variable for 
+"serviceWorkerVersion" is deprecated. 
+Use 
+"{{flutter_service_worker_version}}" 
+template token instead. See https://doc
+s.flutter.dev/platform-integration/web/
+initialization for more details.
+At line:1 char:1
++ flutter build web > build_check.txt 
+2>&1; Get-Content build_check.txt ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~
+    + CategoryInfo          : NotSpeci 
+   fied: (Warning: In ind...r more de  
+  tails.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCo 
+   mmandError
+ 
+Warning: In index.html:30: 
+"FlutterLoader.loadEntrypoint" is 
+deprecated. Use "FlutterLoader.load" 
+instead. See https://docs.flutter.dev/p
+latform-integration/web/initialization 
+for more details.
+Wasm dry run succeeded. Consider 
+building and testing your application 
+with the `--wasm` flag. See docs for 
+more info: https://docs.flutter.dev/pla
+tform-integration/web/wasm
+Use --no-wasm-dry-run to disable these 
+warnings.
+Target dart2js failed: 
+ProcessException: Process exited 
+abnormally with exit code 1:
+lib/pages/student/student_home_page.dar
+t:99:21:
+Error: Can't find ']' to match '['.
+          children: [
+                    ^
+lib/pages/student/student_home_page.dar
+t:87:20:
+Error: Can't find ')' to match '('.
+    return PopScope(
+                   ^
+lib/pages/student/student_home_page.dar
+t:395:23:
+Error: Can't find ')' to match '('.
+    return FadeSlideIn(
+                      ^
+lib/pages/teacher/teacher_home_page.dar
+t:138:20:
+Error: Can't find ')' to match '('.
+    return PopScope(
+                   ^
+lib/pages/teacher/teacher_home_page.dar
+t:523:23:
+Error: Can't find ']' to match '['.
+            children: [
+                      ^
+lib/pages/teacher/teacher_home_page.dar
+t:522:24:
+Error: Can't find ')' to match '('.
+          child: Column(
+                       ^
+lib/pages/teacher/teacher_home_page.dar
+t:520:13:
+Error: Variables must be declared 
+using the keywords 'const', 'final', 
+'var' or a type name.
+            color: 
+color.withOpacity(0.05),
+            ^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:520:13:
+Error: Expected ';' after this.
+            color: 
+color.withOpacity(0.05),
+            ^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:520:18:
+Error: Expected a class member, but 
+got ':'.
+            color: 
+color.withOpacity(0.05),
+                 ^
+lib/pages/teacher/teacher_home_page.dar
+t:520:38:
+Error: Expected an identifier, but got 
+'0.05'.
+            color: 
+color.withOpacity(0.05),
+                                     
+^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:520:43:
+Error: Expected '{' before this.
+            color: 
+color.withOpacity(0.05),
+                                       
+   ^
+lib/pages/teacher/teacher_home_page.dar
+t:520:20:
+Error: The name of a constructor must 
+match the name of the enclosing class.
+            color: 
+color.withOpacity(0.05),
+                   ^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:520:43:
+Error: Expected a class member, but 
+got ','.
+            color: 
+color.withOpacity(0.05),
+                                       
+   ^
+lib/pages/teacher/teacher_home_page.dar
+t:521:11:
+Error: Expected a class member, but 
+got ')'.
+          ),
+          ^
+lib/pages/teacher/teacher_home_page.dar
+t:521:12:
+Error: Expected a class member, but 
+got ','.
+          ),
+           ^
+lib/pages/teacher/teacher_home_page.dar
+t:522:11:
+Error: Variables must be declared 
+using the keywords 'const', 'final', 
+'var' or a type name.
+          child: Column(
+          ^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:522:11:
+Error: Expected ';' after this.
+          child: Column(
+          ^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:522:16:
+Error: Expected a class member, but 
+got ':'.
+          child: Column(
+               ^
+lib/pages/teacher/teacher_home_page.dar
+t:527:10:
+Error: A function expression can't 
+have a name.
+  Widget _buildLiveMonitoringWidget() {
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:541:3:
+Error: Expected ',' before this.
+  Widget _buildRecentExamsSection() {
+  ^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:541:10:
+Error: A function expression can't 
+have a name.
+  Widget _buildRecentExamsSection() {
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:641:3:
+Error: Expected ',' before this.
+  Widget _buildAnalyticsSection() {
+  ^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:641:10:
+Error: A function expression can't 
+have a name.
+  Widget _buildAnalyticsSection() {
+         ^^^^^^^^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:668:3:
+Error: Expected ',' before this.
+  Widget _buildAIProctoringStats() {
+  ^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:668:10:
+Error: A function expression can't 
+have a name.
+  Widget _buildAIProctoringStats() {
+         ^^^^^^^^^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:682:3:
+Error: Expected ',' before this.
+  Widget _aiStatRow(String label, 
+String value, IconData icon) {
+  ^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:682:10:
+Error: A function expression can't 
+have a name.
+  Widget _aiStatRow(String label, 
+String value, IconData icon) {
+         ^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:697:3:
+Error: Expected ',' before this.
+  Widget _buildRecentViolationAlerts() 
+{
+  ^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:697:10:
+Error: A function expression can't 
+have a name.
+  Widget _buildRecentViolationAlerts() 
+{
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:711:3:
+Error: Expected ',' before this.
+  Widget _sectionWrapper({required 
+String title, required Widget child, 
+String? actionText}) {
+  ^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:711:10:
+Error: A function expression can't 
+have a name.
+  Widget _sectionWrapper({required 
+String title, required Widget child, 
+String? actionText}) {
+         ^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:733:3:
+Error: Expected ',' before this.
+  Widget _buildSettingsView(bool 
+isDesktop) {
+  ^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:733:10:
+Error: A function expression can't 
+have a name.
+  Widget _buildSettingsView(bool 
+isDesktop) {
+         ^^^^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:790:3:
+Error: Expected ',' before this.
+  Widget _pageWrapper({required String 
+title, required Widget child}) {
+  ^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:790:10:
+Error: A function expression can't 
+have a name.
+  Widget _pageWrapper({required String 
+title, required Widget child}) {
+         ^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:523:21:
+Error: Non-optional parameters can't 
+have a default value.
+            children: [
+                    ^
+lib/pages/teacher/teacher_home_page.dar
+t:804:3:
+Error: Expected '{' before this.
+  void _showNotifications(BuildContext 
+context) {
+  ^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:524:33:
+Error: Not a constant expression.
+              Icon(icon, color: color, 
+size: 28),
+                                ^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:524:20:
+Error: Undefined name 'icon'.
+              Icon(icon, color: color, 
+size: 28),
+                   ^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:524:15:
+Error: Constant expression expected.
+              Icon(icon, color: color, 
+size: 28),
+              ^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:528:12:
+Error: Method not found: 
+'_sectionWrapper'.
+    return _sectionWrapper(
+           ^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:542:25:
+Error: Undefined name '_exams'.
+    final activeExams = 
+_exams.where((e) => e['status'] != 
+'finished').toList();
+                        ^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:543:27:
+Error: Undefined name '_exams'.
+    final finishedExams = 
+_exams.where((e) => e['status'] == 
+'finished').toList();
+                          ^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:550:18:
+Error: Not a constant expression.
+          child: activeExams.isEmpty 
+                 ^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:555:28:
+Error: Not a constant expression.
+                itemCount: 
+activeExams.length > 5 ? 5 : 
+activeExams.length,
+                           ^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:555:57:
+Error: Not a constant expression.
+                itemCount: 
+activeExams.length > 5 ? 5 : 
+activeExams.length,
+                                       
+                 ^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:562:67:
+Error: Method invocation is not a 
+constant expression.
+                      border: 
+Border.all(color: 
+AppColors.PRIMARY.withOpacity(0.5)),
+                                       
+                           ^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:562:38:
+Error: Constant expression expected.
+                      border: 
+Border.all(color: 
+AppColors.PRIMARY.withOpacity(0.5)),
+                                     
+^^^
+lib/pages/teacher/teacher_home_page.dar
+t:562:38:
+Error: Cannot invoke a non-'const' 
+factory where a const expression is 
+expected.
+                      border: 
+Border.all(color: 
+AppColors.PRIMARY.withOpacity(0.5)),
+                                     
+^^^
+lib/pages/teacher/teacher_home_page.dar
+t:563:48:
+Error: Method invocation is not a 
+constant expression.
+                      color: 
+AppColors.PRIMARY.withOpacity(0.02),
+                                       
+        ^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:564:50:
+Error: Constant expression expected.
+                      borderRadius: 
+BorderRadius.circular(12),
+                                       
+          ^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:564:50:
+Error: Cannot invoke a non-'const' 
+constructor where a const expression 
+is expected.
+                      borderRadius: 
+BorderRadius.circular(12),
+                                       
+          ^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:561:33:
+Error: Constant expression expected.
+                    decoration: 
+BoxDecoration(
+                                
+^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:574:36:
+Error: Not a constant expression.
+                              
+Text(exam['name'] ?? "Untitled Exam", 
+style: const TextStyle(fontWeight: 
+FontWeight.bold)),
+                                   ^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:574:31:
+Error: Constant expression expected.
+                              
+Text(exam['name'] ?? "Untitled Exam", 
+style: const TextStyle(fontWeight: 
+FontWeight.bold)),
+                              ^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:575:39:
+Error: Not a constant expression.
+                              
+Text("${exam['exam_datetime'] ?? 'No 
+Date'} ├óΓé¼┬ó Institution: 
+${exam['institution']}", style: const 
+TextStyle(fontSize: 12, color: 
+AppColors.TEXT_SECONDARY)),
+                                      
+^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:575:92:
+Error: Not a constant expression.
+                              
+Text("${exam['exam_datetime'] ?? 'No 
+Date'} ├óΓé¼┬ó Institution: 
+${exam['institution']}", style: const 
+TextStyle(fontSize: 12, color: 
+AppColors.TEXT_SECONDARY)),
+                                       
+                                       
+            ^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:575:31:
+Error: Constant expression expected.
+                              
+Text("${exam['exam_datetime'] ?? 'No 
+Date'} ├óΓé¼┬ó Institution: 
+${exam['institution']}", style: const 
+TextStyle(fontSize: 12, color: 
+AppColors.TEXT_SECONDARY)),
+                              ^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:573:39:
+Error: Constant expression expected.
+                            children: [
+                                      ^
+lib/pages/teacher/teacher_home_page.dar
+t:571:34:
+Error: Not a constant expression.
+                          child: 
+Column(
+                                 ^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:570:25:
+Error: Constant expression expected.
+                        Expanded(
+                        ^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:580:72:
+Error: Not a constant expression.
+                          onPressed: 
+() => context.go('/add_question/${exam[
+'id']}?examName=${Uri.encodeComponent(e
+xam['name'] ?? '')}'),
+                                       
+                                ^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:580:115:
+Error: Not a constant expression.
+                          onPressed: 
+() => context.go('/add_question/${exam[
+'id']}?examName=${Uri.encodeComponent(e
+xam['name'] ?? '')}'),
+                                       
+                                       
+            ^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:580:99:
+Error: Method invocation is not a 
+constant expression.
+                          onPressed: 
+() => context.go('/add_question/${exam[
+'id']}?examName=${Uri.encodeComponent(e
+xam['name'] ?? '')}'),
+                                       
+                                       
+            ^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:580:44:
+Error: Not a constant expression.
+                          onPressed: 
+() => context.go('/add_question/${exam[
+'id']}?examName=${Uri.encodeComponent(e
+xam['name'] ?? '')}'),
+                                       
+    ^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:580:52:
+Error: Method invocation is not a 
+constant expression.
+                          onPressed: 
+() => context.go('/add_question/${exam[
+'id']}?examName=${Uri.encodeComponent(e
+xam['name'] ?? '')}'),
+                                       
+            ^^
+lib/pages/teacher/teacher_home_page.dar
+t:580:38:
+Error: Not a constant expression.
+                          onPressed: 
+() => context.go('/add_question/${exam[
+'id']}?examName=${Uri.encodeComponent(e
+xam['name'] ?? '')}'),
+                                     ^^
+lib/pages/teacher/teacher_home_page.dar
+t:579:25:
+Error: Constant expression expected.
+                        TextButton(
+                        ^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:585:49:
+Error: Method invocation is not a 
+constant expression.
+                          style: Elevat
+edButton.styleFrom(backgroundColor: 
+Colors.red),
+                                       
+         ^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:586:55:
+Error: Not a constant expression.
+                          onPressed: 
+() => _closeExam(exam['id']),
+                                       
+               ^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:586:44:
+Error: Not a constant expression.
+                          onPressed: 
+() => _closeExam(exam['id']),
+                                       
+    ^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:586:38:
+Error: Not a constant expression.
+                          onPressed: 
+() => _closeExam(exam['id']),
+                                     ^^
+lib/pages/teacher/teacher_home_page.dar
+t:584:25:
+Error: Constant expression expected.
+                        ElevatedButton(
+                        ^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:567:33:
+Error: Constant expression expected.
+                      children: [
+                                ^
+lib/pages/teacher/teacher_home_page.dar
+t:566:28:
+Error: Constant expression expected.
+                    child: Row(
+                           ^^^
+lib/pages/teacher/teacher_home_page.dar
+t:558:26:
+Error: Constant expression expected.
+                  return Container(
+                         ^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:558:26:
+Error: Cannot invoke a non-'const' 
+constructor where a const expression 
+is expected.
+                  return Container(
+                         ^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:556:30:
+Error: Not a constant expression.
+                itemBuilder: (context, 
+index) {
+                             
+^^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:552:24:
+Error: Constant expression expected.
+            : ListView.builder(
+                       ^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:552:24:
+Error: Cannot invoke a non-'const' 
+constructor where a const expression 
+is expected.
+            : ListView.builder(
+                       ^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:547:9:
+Error: Method not found: 
+'_sectionWrapper'.
+        _sectionWrapper(
+        ^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:599:18:
+Error: Not a constant expression.
+          child: finishedExams.isEmpty 
+                 ^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:604:28:
+Error: Not a constant expression.
+                itemCount: 
+finishedExams.length > 5 ? 5 : 
+finishedExams.length,
+                           
+^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:604:59:
+Error: Not a constant expression.
+                itemCount: 
+finishedExams.length > 5 ? 5 : 
+finishedExams.length,
+                                       
+                   ^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:611:38:
+Error: Constant expression expected.
+                      border: 
+Border.all(color: AppColors.BORDER),
+                                     
+^^^
+lib/pages/teacher/teacher_home_page.dar
+t:611:38:
+Error: Cannot invoke a non-'const' 
+factory where a const expression is 
+expected.
+                      border: 
+Border.all(color: AppColors.BORDER),
+                                     
+^^^
+lib/pages/teacher/teacher_home_page.dar
+t:612:50:
+Error: Constant expression expected.
+                      borderRadius: 
+BorderRadius.circular(12),
+                                       
+          ^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:612:50:
+Error: Cannot invoke a non-'const' 
+constructor where a const expression 
+is expected.
+                      borderRadius: 
+BorderRadius.circular(12),
+                                       
+          ^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:610:33:
+Error: Constant expression expected.
+                    decoration: 
+BoxDecoration(
+                                
+^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:622:36:
+Error: Not a constant expression.
+                              
+Text(exam['name'] ?? "Untitled Exam", 
+style: const TextStyle(fontWeight: 
+FontWeight.bold, color: 
+AppColors.TEXT_MUTED)),
+                                   ^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:622:31:
+Error: Constant expression expected.
+                              
+Text(exam['name'] ?? "Untitled Exam", 
+style: const TextStyle(fontWeight: 
+FontWeight.bold, color: 
+AppColors.TEXT_MUTED)),
+                              ^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:623:39:
+Error: Not a constant expression.
+                              
+Text("${exam['exam_datetime'] ?? 'No 
+Date'} ├óΓé¼┬ó Institution: 
+${exam['institution']}", style: const 
+TextStyle(fontSize: 12, color: 
+AppColors.TEXT_SECONDARY)),
+                                      
+^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:623:92:
+Error: Not a constant expression.
+                              
+Text("${exam['exam_datetime'] ?? 'No 
+Date'} ├óΓé¼┬ó Institution: 
+${exam['institution']}", style: const 
+TextStyle(fontSize: 12, color: 
+AppColors.TEXT_SECONDARY)),
+                                       
+                                       
+            ^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:623:31:
+Error: Constant expression expected.
+                              
+Text("${exam['exam_datetime'] ?? 'No 
+Date'} ├óΓé¼┬ó Institution: 
+${exam['institution']}", style: const 
+TextStyle(fontSize: 12, color: 
+AppColors.TEXT_SECONDARY)),
+                              ^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:621:39:
+Error: Constant expression expected.
+                            children: [
+                                      ^
+lib/pages/teacher/teacher_home_page.dar
+t:619:34:
+Error: Not a constant expression.
+                          child: 
+Column(
+                                 ^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:618:25:
+Error: Constant expression expected.
+                        Expanded(
+                        ^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:628:74:
+Error: Not a constant expression.
+                          onPressed: 
+() => context.push('/exam_results/${exa
+m['id']}'),
+                                       
+                                  ^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:628:44:
+Error: Not a constant expression.
+                          onPressed: 
+() => context.push('/exam_results/${exa
+m['id']}'),
+                                       
+    ^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:628:52:
+Error: Method invocation is not a 
+constant expression.
+                          onPressed: 
+() => context.push('/exam_results/${exa
+m['id']}'),
+                                       
+            ^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:628:38:
+Error: Not a constant expression.
+                          onPressed: 
+() => context.push('/exam_results/${exa
+m['id']}'),
+                                     ^^
+lib/pages/teacher/teacher_home_page.dar
+t:627:25:
+Error: Constant expression expected.
+                        TextButton(
+                        ^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:615:33:
+Error: Constant expression expected.
+                      children: [
+                                ^
+lib/pages/teacher/teacher_home_page.dar
+t:614:28:
+Error: Constant expression expected.
+                    child: Row(
+                           ^^^
+lib/pages/teacher/teacher_home_page.dar
+t:607:26:
+Error: Constant expression expected.
+                  return Container(
+                         ^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:607:26:
+Error: Cannot invoke a non-'const' 
+constructor where a const expression 
+is expected.
+                  return Container(
+                         ^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:605:30:
+Error: Not a constant expression.
+                itemBuilder: (context, 
+index) {
+                             
+^^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:601:24:
+Error: Constant expression expected.
+            : ListView.builder(
+                       ^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:601:24:
+Error: Cannot invoke a non-'const' 
+constructor where a const expression 
+is expected.
+            : ListView.builder(
+                       ^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:596:9:
+Error: Method not found: 
+'_sectionWrapper'.
+        _sectionWrapper(
+        ^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:546:17:
+Error: Constant expression expected.
+      children: [
+                ^
+lib/pages/teacher/teacher_home_page.dar
+t:545:12:
+Error: Not a constant expression.
+    return Column(
+           ^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:649:49:
+Error: Constant expression expected.
+              BarChartGroupData(x: 0, 
+barRods: [BarChartRodData(toY: 8, 
+color: AppColors.PRIMARY)]),
+                                       
+         ^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:649:49:
+Error: Cannot invoke a non-'const' 
+constructor where a const expression 
+is expected.
+              BarChartGroupData(x: 0, 
+barRods: [BarChartRodData(toY: 8, 
+color: AppColors.PRIMARY)]),
+                                       
+         ^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:649:48:
+Error: Constant expression expected.
+              BarChartGroupData(x: 0, 
+barRods: [BarChartRodData(toY: 8, 
+color: AppColors.PRIMARY)]),
+                                       
+        ^
+lib/pages/teacher/teacher_home_page.dar
+t:649:15:
+Error: Constant expression expected.
+              BarChartGroupData(x: 0, 
+barRods: [BarChartRodData(toY: 8, 
+color: AppColors.PRIMARY)]),
+              ^^^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:649:15:
+Error: Cannot invoke a non-'const' 
+constructor where a const expression 
+is expected.
+              BarChartGroupData(x: 0, 
+barRods: [BarChartRodData(toY: 8, 
+color: AppColors.PRIMARY)]),
+              ^^^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:650:49:
+Error: Constant expression expected.
+              BarChartGroupData(x: 1, 
+barRods: [BarChartRodData(toY: 10, 
+color: AppColors.PRIMARY)]),
+                                       
+         ^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:650:49:
+Error: Cannot invoke a non-'const' 
+constructor where a const expression 
+is expected.
+              BarChartGroupData(x: 1, 
+barRods: [BarChartRodData(toY: 10, 
+color: AppColors.PRIMARY)]),
+                                       
+         ^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:650:48:
+Error: Constant expression expected.
+              BarChartGroupData(x: 1, 
+barRods: [BarChartRodData(toY: 10, 
+color: AppColors.PRIMARY)]),
+                                       
+        ^
+lib/pages/teacher/teacher_home_page.dar
+t:650:15:
+Error: Constant expression expected.
+              BarChartGroupData(x: 1, 
+barRods: [BarChartRodData(toY: 10, 
+color: AppColors.PRIMARY)]),
+              ^^^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:650:15:
+Error: Cannot invoke a non-'const' 
+constructor where a const expression 
+is expected.
+              BarChartGroupData(x: 1, 
+barRods: [BarChartRodData(toY: 10, 
+color: AppColors.PRIMARY)]),
+              ^^^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:651:49:
+Error: Constant expression expected.
+              BarChartGroupData(x: 2, 
+barRods: [BarChartRodData(toY: 14, 
+color: AppColors.SECONDARY)]),
+                                       
+         ^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:651:49:
+Error: Cannot invoke a non-'const' 
+constructor where a const expression 
+is expected.
+              BarChartGroupData(x: 2, 
+barRods: [BarChartRodData(toY: 14, 
+color: AppColors.SECONDARY)]),
+                                       
+         ^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:651:48:
+Error: Constant expression expected.
+              BarChartGroupData(x: 2, 
+barRods: [BarChartRodData(toY: 14, 
+color: AppColors.SECONDARY)]),
+                                       
+        ^
+lib/pages/teacher/teacher_home_page.dar
+t:651:15:
+Error: Constant expression expected.
+              BarChartGroupData(x: 2, 
+barRods: [BarChartRodData(toY: 14, 
+color: AppColors.SECONDARY)]),
+              ^^^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:651:15:
+Error: Cannot invoke a non-'const' 
+constructor where a const expression 
+is expected.
+              BarChartGroupData(x: 2, 
+barRods: [BarChartRodData(toY: 14, 
+color: AppColors.SECONDARY)]),
+              ^^^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:652:49:
+Error: Constant expression expected.
+              BarChartGroupData(x: 3, 
+barRods: [BarChartRodData(toY: 15, 
+color: AppColors.PRIMARY)]),
+                                       
+         ^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:652:49:
+Error: Cannot invoke a non-'const' 
+constructor where a const expression 
+is expected.
+              BarChartGroupData(x: 3, 
+barRods: [BarChartRodData(toY: 15, 
+color: AppColors.PRIMARY)]),
+                                       
+         ^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:652:48:
+Error: Constant expression expected.
+              BarChartGroupData(x: 3, 
+barRods: [BarChartRodData(toY: 15, 
+color: AppColors.PRIMARY)]),
+                                       
+        ^
+lib/pages/teacher/teacher_home_page.dar
+t:652:15:
+Error: Constant expression expected.
+              BarChartGroupData(x: 3, 
+barRods: [BarChartRodData(toY: 15, 
+color: AppColors.PRIMARY)]),
+              ^^^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:652:15:
+Error: Cannot invoke a non-'const' 
+constructor where a const expression 
+is expected.
+              BarChartGroupData(x: 3, 
+barRods: [BarChartRodData(toY: 15, 
+color: AppColors.PRIMARY)]),
+              ^^^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:653:49:
+Error: Constant expression expected.
+              BarChartGroupData(x: 4, 
+barRods: [BarChartRodData(toY: 13, 
+color: AppColors.PRIMARY)]),
+                                       
+         ^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:653:49:
+Error: Cannot invoke a non-'const' 
+constructor where a const expression 
+is expected.
+              BarChartGroupData(x: 4, 
+barRods: [BarChartRodData(toY: 13, 
+color: AppColors.PRIMARY)]),
+                                       
+         ^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:653:48:
+Error: Constant expression expected.
+              BarChartGroupData(x: 4, 
+barRods: [BarChartRodData(toY: 13, 
+color: AppColors.PRIMARY)]),
+                                       
+        ^
+lib/pages/teacher/teacher_home_page.dar
+t:653:15:
+Error: Constant expression expected.
+              BarChartGroupData(x: 4, 
+barRods: [BarChartRodData(toY: 13, 
+color: AppColors.PRIMARY)]),
+              ^^^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:653:15:
+Error: Cannot invoke a non-'const' 
+constructor where a const expression 
+is expected.
+              BarChartGroupData(x: 4, 
+barRods: [BarChartRodData(toY: 13, 
+color: AppColors.PRIMARY)]),
+              ^^^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:648:24:
+Error: Constant expression expected.
+            barGroups: [
+                       ^
+lib/pages/teacher/teacher_home_page.dar
+t:655:25:
+Error: Constant expression expected.
+            borderData: 
+FlBorderData(show: false),
+                        ^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:655:25:
+Error: Cannot invoke a non-'const' 
+constructor where a const expression 
+is expected.
+            borderData: 
+FlBorderData(show: false),
+                        ^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:656:23:
+Error: Constant expression expected.
+            gridData: FlGridData(show: 
+false),
+                      ^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:658:50:
+Error: Constant expression expected.
+              leftTitles: 
+AxisTitles(sideTitles: 
+SideTitles(showTitles: false)),
+                                       
+          ^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:658:27:
+Error: Constant expression expected.
+              leftTitles: 
+AxisTitles(sideTitles: 
+SideTitles(showTitles: false)),
+                          ^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:659:49:
+Error: Constant expression expected.
+              topTitles: 
+AxisTitles(sideTitles: 
+SideTitles(showTitles: false)),
+                                       
+         ^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:659:26:
+Error: Constant expression expected.
+              topTitles: 
+AxisTitles(sideTitles: 
+SideTitles(showTitles: false)),
+                         ^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:660:51:
+Error: Constant expression expected.
+              rightTitles: 
+AxisTitles(sideTitles: 
+SideTitles(showTitles: false)),
+                                       
+           ^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:660:28:
+Error: Constant expression expected.
+              rightTitles: 
+AxisTitles(sideTitles: 
+SideTitles(showTitles: false)),
+                           ^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:657:25:
+Error: Constant expression expected.
+            titlesData: FlTitlesData(
+                        ^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:647:11:
+Error: Constant expression expected.
+          BarChartData(
+          ^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:647:11:
+Error: Cannot invoke a non-'const' 
+constructor where a const expression 
+is expected.
+          BarChartData(
+          ^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:646:16:
+Error: Constant expression expected.
+        child: BarChart(
+               ^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:646:16:
+Error: Cannot invoke a non-'const' 
+constructor where a const expression 
+is expected.
+        child: BarChart(
+               ^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:644:14:
+Error: Constant expression expected.
+      child: SizedBox(
+             ^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:642:12:
+Error: Method not found: 
+'_sectionWrapper'.
+    return _sectionWrapper(
+           ^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:673:47:
+Error: Not a constant expression.
+          _aiStatRow("Students 
+Monitored", 
+"${_stats['total_students']}", 
+Icons.remove_red_eye_outlined),
+                                       
+       ^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:673:11:
+Error: Method not found: '_aiStatRow'.
+          _aiStatRow("Students 
+Monitored", 
+"${_stats['total_students']}", 
+Icons.remove_red_eye_outlined),
+          ^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:674:11:
+Error: Method not found: '_aiStatRow'.
+          _aiStatRow("Faces Detected", 
+"0%", Icons.face_retouching_natural),
+          ^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:675:44:
+Error: Not a constant expression.
+          _aiStatRow("Warnings 
+Issued", "${_stats['violations']}", 
+Icons.warning_amber_rounded),
+                                       
+    ^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:675:11:
+Error: Method not found: '_aiStatRow'.
+          _aiStatRow("Warnings 
+Issued", "${_stats['violations']}", 
+Icons.warning_amber_rounded),
+          ^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:676:11:
+Error: Method not found: '_aiStatRow'.
+          _aiStatRow("Auto 
+Submissions", "0", 
+Icons.auto_delete_outlined),
+          ^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:672:19:
+Error: Constant expression expected.
+        children: [
+                  ^
+lib/pages/teacher/teacher_home_page.dar
+t:671:14:
+Error: Not a constant expression.
+      child: Column(
+             ^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:669:12:
+Error: Method not found: 
+'_sectionWrapper'.
+    return _sectionWrapper(
+           ^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:687:16:
+Error: Not a constant expression.
+          Icon(icon, size: 18, color: 
+AppColors.TEXT_SECONDARY),
+               ^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:687:11:
+Error: Constant expression expected.
+          Icon(icon, size: 18, color: 
+AppColors.TEXT_SECONDARY),
+          ^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:689:16:
+Error: Not a constant expression.
+          Text(label, style: const 
+TextStyle(fontWeight: 
+FontWeight.w500)),
+               ^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:689:11:
+Error: Constant expression expected.
+          Text(label, style: const 
+TextStyle(fontWeight: 
+FontWeight.w500)),
+          ^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:691:16:
+Error: Not a constant expression.
+          Text(value, style: const 
+TextStyle(fontWeight: FontWeight.bold, 
+color: AppColors.PRIMARY)),
+               ^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:691:11:
+Error: Constant expression expected.
+          Text(value, style: const 
+TextStyle(fontWeight: FontWeight.bold, 
+color: AppColors.PRIMARY)),
+          ^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:686:19:
+Error: Constant expression expected.
+        children: [
+                  ^
+lib/pages/teacher/teacher_home_page.dar
+t:685:14:
+Error: Constant expression expected.
+      child: Row(
+             ^^^
+lib/pages/teacher/teacher_home_page.dar
+t:683:12:
+Error: Constant expression expected.
+    return Padding(
+           ^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:698:12:
+Error: Method not found: 
+'_sectionWrapper'.
+    return _sectionWrapper(
+           ^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:720:20:
+Error: Not a constant expression.
+              Text(title, style: const 
+TextStyle(fontSize: 18, fontWeight: 
+FontWeight.bold, color: Colors.white)),
+                   ^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:720:15:
+Error: Constant expression expected.
+              Text(title, style: const 
+TextStyle(fontSize: 18, fontWeight: 
+FontWeight.bold, color: Colors.white)),
+              ^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:721:19:
+Error: Not a constant expression.
+              if (actionText != null) 
+TextButton(onPressed: () {}, child: 
+Text(actionText, style: const 
+TextStyle(color: Color(0xFF60A5FA)))),
+                  ^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:721:61:
+Error: Not a constant expression.
+              if (actionText != null) 
+TextButton(onPressed: () {}, child: 
+Text(actionText, style: const 
+TextStyle(color: Color(0xFF60A5FA)))),
+                                       
+                     ^^
+lib/pages/teacher/teacher_home_page.dar
+t:721:80:
+Error: Not a constant expression.
+              if (actionText != null) 
+TextButton(onPressed: () {}, child: 
+Text(actionText, style: const 
+TextStyle(color: Color(0xFF60A5FA)))),
+                                       
+                                       
+ ^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:721:75:
+Error: Constant expression expected.
+              if (actionText != null) 
+TextButton(onPressed: () {}, child: 
+Text(actionText, style: const 
+TextStyle(color: Color(0xFF60A5FA)))),
+                                       
+                                   ^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:721:39:
+Error: Constant expression expected.
+              if (actionText != null) 
+TextButton(onPressed: () {}, child: 
+Text(actionText, style: const 
+TextStyle(color: Color(0xFF60A5FA)))),
+                                      
+^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:719:23:
+Error: Constant expression expected.
+            children: [
+                      ^
+lib/pages/teacher/teacher_home_page.dar
+t:717:11:
+Error: Constant expression expected.
+          Row(
+          ^^^
+lib/pages/teacher/teacher_home_page.dar
+t:716:19:
+Error: Constant expression expected.
+        children: [
+                  ^
+lib/pages/teacher/teacher_home_page.dar
+t:725:11:
+Error: Not a constant expression.
+          child,
+          ^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:714:14:
+Error: Not a constant expression.
+      child: Column(
+             ^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:712:12:
+Error: Constant expression expected.
+    return GlassCard(
+           ^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:745:34:
+Error: Undefined name 'widget'.
+                  subtitle: 
+Text(widget.teacherName),
+                                 ^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:745:29:
+Error: Constant expression expected.
+                  subtitle: 
+Text(widget.teacherName),
+                            ^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:742:17:
+Error: Constant expression expected.
+                ListTile(
+                ^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:759:29:
+Error: Constant expression expected.
+                  subtitle: 
+Text(GlobalState.institution),
+                            ^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:756:17:
+Error: Constant expression expected.
+                ListTile(
+                ^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:741:25:
+Error: Constant expression expected.
+              children: [
+                        ^
+lib/pages/teacher/teacher_home_page.dar
+t:740:20:
+Error: Not a constant expression.
+            child: Column(
+                   ^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:738:11:
+Error: Method not found: 
+'_sectionWrapper'.
+          _sectionWrapper(
+          ^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:773:30:
+Error: Not a constant expression.
+                  onChanged: (v) {},
+                             ^^^
+lib/pages/teacher/teacher_home_page.dar
+t:769:17:
+Error: Constant expression expected.
+                SwitchListTile(
+                ^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:780:30:
+Error: Not a constant expression.
+                  onChanged: (v) {},
+                             ^^^
+lib/pages/teacher/teacher_home_page.dar
+t:776:17:
+Error: Constant expression expected.
+                SwitchListTile(
+                ^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:768:25:
+Error: Constant expression expected.
+              children: [
+                        ^
+lib/pages/teacher/teacher_home_page.dar
+t:767:20:
+Error: Not a constant expression.
+            child: Column(
+                   ^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:765:11:
+Error: Method not found: 
+'_sectionWrapper'.
+          _sectionWrapper(
+          ^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:737:19:
+Error: Constant expression expected.
+        children: [
+                  ^
+lib/pages/teacher/teacher_home_page.dar
+t:736:14:
+Error: Not a constant expression.
+      child: Column(
+             ^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:734:12:
+Error: Method not found: 
+'_pageWrapper'.
+    return _pageWrapper(
+           ^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:796:16:
+Error: Not a constant expression.
+          Text(title, style: const 
+TextStyle(fontSize: 28, fontWeight: 
+FontWeight.bold, color: 
+AppColors.TEXT_PRIMARY)),
+               ^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:796:11:
+Error: Constant expression expected.
+          Text(title, style: const 
+TextStyle(fontSize: 28, fontWeight: 
+FontWeight.bold, color: 
+AppColors.TEXT_PRIMARY)),
+          ^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:795:19:
+Error: Constant expression expected.
+        children: [
+                  ^
+lib/pages/teacher/teacher_home_page.dar
+t:798:11:
+Error: Not a constant expression.
+          child,
+          ^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:793:14:
+Error: Not a constant expression.
+      child: Column(
+             ^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:791:12:
+Error: Constant expression expected.
+    return SingleChildScrollView(
+           ^^^^^^^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:523:23:
+Error: Constant expression expected.
+            children: [
+                      ^
+lib/pages/teacher/teacher_home_page.dar
+t:28:43:
+Error: Couldn't find constructor 
+'_TeacherHomePageState'.
+  State<TeacherHomePage> createState() 
+=> _TeacherHomePageState();
+                                       
+   ^^^^^^^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:153:28:
+Error: Too few positional arguments: 1 
+required, 0 given.
+              child: Column(
+                           ^
+lib/pages/teacher/teacher_home_page.dar
+t:186:16:
+Error: The method '_buildSettingsView' 
+isn't defined for the type 
+'_TeacherHomePageState'.
+ - '_TeacherHomePageState' is from 'pac
+kage:smart_exam_app/pages/teacher/teach
+er_home_page.dart' ('lib/pages/teacher/
+teacher_home_page.dart').
+        return 
+_buildSettingsView(isDesktop);
+               ^^^^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:214:23:
+Error: The method 
+'_buildRecentExamsSection' isn't 
+defined for the type 
+'_TeacherHomePageState'.
+ - '_TeacherHomePageState' is from 'pac
+kage:smart_exam_app/pages/teacher/teach
+er_home_page.dart' ('lib/pages/teacher/
+teacher_home_page.dart').
+                      
+_buildRecentExamsSection(),
+                      
+^^^^^^^^^^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:216:23:
+Error: The method 
+'_buildAnalyticsSection' isn't defined 
+for the type '_TeacherHomePageState'.
+ - '_TeacherHomePageState' is from 'pac
+kage:smart_exam_app/pages/teacher/teach
+er_home_page.dart' ('lib/pages/teacher/
+teacher_home_page.dart').
+                      
+_buildAnalyticsSection(),
+                      
+^^^^^^^^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:210:32:
+Error: Too few positional arguments: 1 
+required, 0 given.
+                  child: Column(
+                               ^
+lib/pages/teacher/teacher_home_page.dar
+t:225:23:
+Error: The method 
+'_buildLiveMonitoringWidget' isn't 
+defined for the type 
+'_TeacherHomePageState'.
+ - '_TeacherHomePageState' is from 'pac
+kage:smart_exam_app/pages/teacher/teach
+er_home_page.dart' ('lib/pages/teacher/
+teacher_home_page.dart').
+                      
+_buildLiveMonitoringWidget(),
+                      
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:227:23:
+Error: The method 
+'_buildAIProctoringStats' isn't 
+defined for the type 
+'_TeacherHomePageState'.
+ - '_TeacherHomePageState' is from 'pac
+kage:smart_exam_app/pages/teacher/teach
+er_home_page.dart' ('lib/pages/teacher/
+teacher_home_page.dart').
+                      
+_buildAIProctoringStats(),
+                      
+^^^^^^^^^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:229:23:
+Error: The method 
+'_buildRecentViolationAlerts' isn't 
+defined for the type 
+'_TeacherHomePageState'.
+ - '_TeacherHomePageState' is from 'pac
+kage:smart_exam_app/pages/teacher/teach
+er_home_page.dart' ('lib/pages/teacher/
+teacher_home_page.dart').
+                      
+_buildRecentViolationAlerts(),
+                      
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:223:32:
+Error: Too few positional arguments: 1 
+required, 0 given.
+                  child: Column(
+                               ^
+lib/pages/teacher/teacher_home_page.dar
+t:240:17:
+Error: The method 
+'_buildLiveMonitoringWidget' isn't 
+defined for the type 
+'_TeacherHomePageState'.
+ - '_TeacherHomePageState' is from 'pac
+kage:smart_exam_app/pages/teacher/teach
+er_home_page.dart' ('lib/pages/teacher/
+teacher_home_page.dart').
+                
+_buildLiveMonitoringWidget(),
+                
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:242:17:
+Error: The method 
+'_buildRecentExamsSection' isn't 
+defined for the type 
+'_TeacherHomePageState'.
+ - '_TeacherHomePageState' is from 'pac
+kage:smart_exam_app/pages/teacher/teach
+er_home_page.dart' ('lib/pages/teacher/
+teacher_home_page.dart').
+                
+_buildRecentExamsSection(),
+                
+^^^^^^^^^^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:244:17:
+Error: The method 
+'_buildAnalyticsSection' isn't defined 
+for the type '_TeacherHomePageState'.
+ - '_TeacherHomePageState' is from 'pac
+kage:smart_exam_app/pages/teacher/teach
+er_home_page.dart' ('lib/pages/teacher/
+teacher_home_page.dart').
+                
+_buildAnalyticsSection(),
+                ^^^^^^^^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:246:17:
+Error: The method 
+'_buildAIProctoringStats' isn't 
+defined for the type 
+'_TeacherHomePageState'.
+ - '_TeacherHomePageState' is from 'pac
+kage:smart_exam_app/pages/teacher/teach
+er_home_page.dart' ('lib/pages/teacher/
+teacher_home_page.dart').
+                
+_buildAIProctoringStats(),
+                ^^^^^^^^^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:236:19:
+Error: Too few positional arguments: 1 
+required, 0 given.
+            Column(
+                  ^
+lib/pages/teacher/teacher_home_page.dar
+t:197:20:
+Error: Too few positional arguments: 1 
+required, 0 given.
+      child: Column(
+                   ^
+lib/pages/teacher/teacher_home_page.dar
+t:347:20:
+Error: Too few positional arguments: 1 
+required, 0 given.
+      child: Column(
+                   ^
+lib/pages/teacher/teacher_home_page.dar
+t:452:18:
+Error: Too few positional arguments: 1 
+required, 0 given.
+    return Column(
+                 ^
+lib/pages/teacher/teacher_home_page.dar
+t:495:12:
+Error: The method '_sectionWrapper' 
+isn't defined for the type 
+'_TeacherHomePageState'.
+ - '_TeacherHomePageState' is from 'pac
+kage:smart_exam_app/pages/teacher/teach
+er_home_page.dart' ('lib/pages/teacher/
+teacher_home_page.dart').
+    return _sectionWrapper(
+           ^^^^^^^^^^^^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:972:1:
+Error: Expected '{' before this.
+}
+^
+lib/pages/teacher/teacher_home_page.dar
+t:804:3:
+Error: Expected a function body, but 
+got 'void'.
+  void _showNotifications(BuildContext 
+context) {
+  ^^^^
+lib/pages/teacher/teacher_home_page.dar
+t:804:3:
+Error: Expected a function body, but 
+got '{'.
+
+lib/pages/teacher/teacher_home_page.dar
+t:523:23:
+Error: Non-constant list literal is 
+not a constant expression.
+            children: [
+                      ^
+Error: Compilation failed.
+  Command: D:\coding\flutter\bin\cache\
+dart-sdk\bin\dart.exe compile js --plat
+form-binaries=D:\coding\flutter\bin\cac
+he\flutter_web_sdk\kernel 
+--invoker=flutter_tool 
+-Ddart.vm.product=true 
+-DFLUTTER_VERSION=3.35.3 
+-DFLUTTER_CHANNEL=stable -DFLUTTER_GIT_
+URL=https://github.com/flutter/flutter.
+git -DFLUTTER_FRAMEWORK_REVISION=a402d9
+a437 
+-DFLUTTER_ENGINE_REVISION=ddf47dd3ff 
+-DFLUTTER_DART_VERSION=3.9.2 
+-DFLUTTER_WEB_USE_SKIA=true 
+-DFLUTTER_WEB_USE_SKWASM=false -DFLUTTE
+R_WEB_CANVASKIT_URL=https://www.gstatic
+.com/flutter-canvaskit/ddf47dd3ff96dbde
+6d9c614db0d7f019d7c7a2b7/ 
+--native-null-assertions 
+--no-source-maps -O4 --minify -o D:\cap
+stone\seis\frontend\.dart_tool\flutter_
+build\b791890dd0d11288c396f9612073ac9d\
+app.dill --packages=D:\capstone\seis\fr
+ontend\.dart_tool\package_config.json 
+--cfe-only D:\capstone\seis\frontend\.d
+art_tool\flutter_build\b791890dd0d11288
+c396f9612073ac9d\main.dart
+#0      RunResult.throwException (packa
+ge:flutter_tools/src/base/process.dart:
+118:5)
+#1      _DefaultProcessUtils.run (packa
+ge:flutter_tools/src/base/process.dart:
+344:19)
+<asynchronous suspension>
+#2      Dart2JSTarget.build (package:fl
+utter_tools/src/build_system/targets/we
+b.dart:204:5)
+<asynchronous suspension>
+#3      _BuildInstance._invokeInternal 
+(package:flutter_tools/src/build_system
+/build_system.dart:873:9)
+<asynchronous suspension>
+#4      Future.wait.<anonymous 
+closure> 
+(dart:async/future.dart:525:21)
+<asynchronous suspension>
+#5      _BuildInstance.invokeTarget (pa
+ckage:flutter_tools/src/build_system/bu
+ild_system.dart:811:32)
+<asynchronous suspension>
+#6      Future.wait.<anonymous 
+closure> 
+(dart:async/future.dart:525:21)
+<asynchronous suspension>
+#7      _BuildInstance.invokeTarget (pa
+ckage:flutter_tools/src/build_system/bu
+ild_system.dart:811:32)
+<asynchronous suspension>
+#8      FlutterBuildSystem.build (packa
+ge:flutter_tools/src/build_system/build
+_system.dart:631:16)
+<asynchronous suspension>
+#9      WebBuilder.buildWeb (package:fl
+utter_tools/src/web/compile.dart:90:34)
+<asynchronous suspension>
+#10     BuildWebCommand.runCommand (pac
+kage:flutter_tools/src/commands/build_w
+eb.dart:282:5)
+<asynchronous suspension>
+#11     FlutterCommand.run.<anonymous 
+closure> (package:flutter_tools/src/run
+ner/flutter_command.dart:1581:27)
+<asynchronous suspension>
+#12     AppContext.run.<anonymous 
+closure> (package:flutter_tools/src/bas
+e/context.dart:154:19)
+<asynchronous suspension>
+#13     CommandRunner.runCommand (packa
+ge:args/command_runner.dart:212:13)
+<asynchronous suspension>
+#14     FlutterCommandRunner.runCommand
+.<anonymous closure> (package:flutter_t
+ools/src/runner/flutter_command_runner.
+dart:503:9)
+<asynchronous suspension>
+#15     AppContext.run.<anonymous 
+closure> (package:flutter_tools/src/bas
+e/context.dart:154:19)
+<asynchronous suspension>
+#16     
+FlutterCommandRunner.runCommand (packag
+e:flutter_tools/src/runner/flutter_comm
+and_runner.dart:438:5)
+<asynchronous suspension>
+#17     run.<anonymous 
+closure>.<anonymous closure> (package:f
+lutter_tools/runner.dart:98:11)
+<asynchronous suspension>
+#18     AppContext.run.<anonymous 
+closure> (package:flutter_tools/src/bas
+e/context.dart:154:19)
+<asynchronous suspension>
+#19     main (package:flutter_tools/exe
+cutable.dart:101:3)
+<asynchronous suspension>
+
+Compiling lib\main.dart for the Web...                             14.9s
+Error: Failed to compile application 
+for the Web.

@@ -78,6 +78,23 @@ CREATE TABLE IF NOT EXISTS exam_results (
 )
 """)
 
+def create_violation_table():
+    conn = sqlite3.connect("database.db")
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS violations (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        student_id TEXT NOT NULL,
+        exam_id TEXT NOT NULL,
+        violation_type TEXT NOT NULL,
+        confidence REAL DEFAULT 1.0,
+        screenshot TEXT,
+        timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+    """)
+   
+
 # Dummy users
 c.execute("INSERT OR IGNORE INTO users (id, name, password, role, institution) VALUES ('s1','Alice','pass123','student','Test School')")
 c.execute("INSERT OR IGNORE INTO users (id, name, password, role, institution) VALUES ('t1','Mr. John','pass123','teacher','Test School')")
@@ -95,3 +112,4 @@ INSERT OR IGNORE INTO questions (id, exam_id, question_text, question_type, opti
 conn.commit()
 conn.close()
 print("Database created and initialized!")
+create_violation_table()

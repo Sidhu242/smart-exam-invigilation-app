@@ -65,133 +65,196 @@ class _SignupPageState extends State<SignupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.BACKGROUND,
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF673AB7),
-        elevation: 2,
-        title: const Text('Create Account'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.pop(),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+             begin: Alignment.topLeft,
+             end: Alignment.bottomRight,
+             colors: [
+               AppColors.PRIMARY,
+               AppColors.PRIMARY_DARK,
+             ],
+          ),
         ),
-      ),
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+        child: SafeArea(
+          child: Stack(
             children: [
-              TextField(
-                controller: _idController,
-                enabled: !_isLoading,
-                decoration: InputDecoration(
-                  labelText: 'User ID',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              TextField(
-                controller: _nameController,
-                enabled: !_isLoading,
-                decoration: InputDecoration(
-                  labelText: 'Full Name',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              TextField(
-                controller: _passwordController,
-                enabled: !_isLoading,
-                obscureText: true,
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              TextField(
-                controller: _institutionController,
-                enabled: !_isLoading,
-                decoration: InputDecoration(
-                  labelText: 'Institution',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              DropdownButtonFormField<String>(
-                value: _selectedRole,
-                onChanged: (v) =>
-                    setState(() => _selectedRole = v ?? 'student'),
-                items: const [
-                  DropdownMenuItem(value: 'student', child: Text('Student')),
-                  DropdownMenuItem(value: 'teacher', child: Text('Teacher')),
-                ],
-                decoration: InputDecoration(
-                  labelText: 'Role',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 24),
-              if (_errorMessage.isNotEmpty)
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: AppColors.ERROR.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Text(
-                    _errorMessage,
-                    style: const TextStyle(color: AppColors.ERROR),
-                  ),
-                ),
-              const SizedBox(height: 24),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: _isLoading ? null : _signup,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.PRIMARY,
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                  ),
-                  child: _isLoading
-                      ? const SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            valueColor:
-                                AlwaysStoppedAnimation<Color>(Colors.white),
-                          ),
-                        )
-                      : const Text(
-                          'Sign Up',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
+              Center(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(24),
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 400),
+                    child: Card(
+                      elevation: 8,
+                      shadowColor: Colors.black26,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(24),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(32),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                color: AppColors.PRIMARY.withOpacity(0.1),
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Icons.person_add,
+                                size: 64,
+                                color: AppColors.PRIMARY,
+                              ),
+                            ),
+                            const SizedBox(height: 24),
+                            const Text(
+                              'Create Account',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 28,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.TEXT_PRIMARY,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            const Text(
+                              'Join Smart Exam Invigilation',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: AppColors.TEXT_SECONDARY,
+                              ),
+                            ),
+                            const SizedBox(height: 40),
+                            TextField(
+                              controller: _idController,
+                              enabled: !_isLoading,
+                              decoration: const InputDecoration(
+                                labelText: 'User ID',
+                                prefixIcon: Icon(Icons.badge_outlined),
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            TextField(
+                              controller: _nameController,
+                              enabled: !_isLoading,
+                              decoration: const InputDecoration(
+                                labelText: 'Full Name',
+                                prefixIcon: Icon(Icons.person_outline),
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            TextField(
+                              controller: _passwordController,
+                              enabled: !_isLoading,
+                              obscureText: true,
+                              decoration: const InputDecoration(
+                                labelText: 'Password',
+                                prefixIcon: Icon(Icons.lock_outline),
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            TextField(
+                              controller: _institutionController,
+                              enabled: !_isLoading,
+                              decoration: const InputDecoration(
+                                labelText: 'Institution',
+                                prefixIcon: Icon(Icons.account_balance_outlined),
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            DropdownButtonFormField<String>(
+                              value: _selectedRole,
+                              onChanged: (v) =>
+                                  setState(() => _selectedRole = v ?? 'student'),
+                              items: const [
+                                DropdownMenuItem(value: 'student', child: Text('Student')),
+                                DropdownMenuItem(value: 'teacher', child: Text('Teacher')),
+                              ],
+                              decoration: const InputDecoration(
+                                labelText: 'Role',
+                                prefixIcon: Icon(Icons.work_outline),
+                              ),
+                            ),
+                            const SizedBox(height: 24),
+                            if (_errorMessage.isNotEmpty)
+                              Container(
+                                padding: const EdgeInsets.all(12),
+                                decoration: BoxDecoration(
+                                  color: AppColors.ERROR.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(color: AppColors.ERROR.withOpacity(0.05)),
+                                ),
+                                child: Row(
+                                  children: [
+                                    const Icon(Icons.error_outline, color: AppColors.ERROR, size: 20),
+                                    const SizedBox(width: 8),
+                                    Expanded(
+                                      child: Text(
+                                        _errorMessage,
+                                        style: const TextStyle(color: AppColors.ERROR, fontSize: 13),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            if (_errorMessage.isNotEmpty) const SizedBox(height: 24),
+                            SizedBox(
+                              width: double.infinity,
+                              height: 54,
+                              child: ElevatedButton(
+                                onPressed: _isLoading ? null : _signup,
+                                child: _isLoading
+                                    ? const SizedBox(
+                                        height: 24,
+                                        width: 24,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(Colors.white),
+                                        ),
+                                      )
+                                    : const Text(
+                                        'Sign Up',
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                              ),
+                            ),
+                            const SizedBox(height: 24),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  'Already have an account? ',
+                                  style: TextStyle(color: AppColors.TEXT_SECONDARY),
+                                ),
+                                GestureDetector(
+                                  onTap: () => context.go('/login'),
+                                  child: const Text(
+                                    'Sign in',
+                                    style: TextStyle(
+                                      color: AppColors.PRIMARY,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
+                      ),
+                    ),
+                  ),
                 ),
               ),
-              const SizedBox(height: 16),
-              GestureDetector(
-                onTap: () => context.go('/login'),
-                child: const Text(
-                  'Already have an account? Login',
-                  style: TextStyle(
-                    color: AppColors.PRIMARY,
-                    fontWeight: FontWeight.bold,
-                  ),
+              Positioned(
+                top: 16,
+                left: 16,
+                child: IconButton(
+                  icon: const Icon(Icons.arrow_back, color: Colors.white),
+                  onPressed: () => context.go('/login'),
+                  tooltip: 'Back to Login',
                 ),
               ),
             ],

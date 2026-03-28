@@ -17,7 +17,25 @@ class ExamService {
   }) async {
     try {
       final response = await _baseService.get(
-        '${AppConfig.GET_EXAMS}?institution=${Uri.encodeComponent(institution)}&published=${published ? '1' : '0'}',
+        '${AppConfig.GET_EXAMS}?institution=${Uri.encodeComponent(institution.trim())}&published=${published ? '1' : '0'}',
+      );
+
+      if (response['status'] == 'success') {
+        return response['exams'] ?? [];
+      } else {
+        throw DataException(message: 'Failed to fetch exams');
+      }
+    } catch (e) {
+      if (e is AppException) rethrow;
+      throw NetworkException(message: e.toString());
+    }
+  }
+
+  /// Get ALL exams for institution (published + unpublished) - for teacher use
+  Future<List<dynamic>> getAllExams({required String institution}) async {
+    try {
+      final response = await _baseService.get(
+        '${AppConfig.GET_ALL_EXAMS}?institution=${Uri.encodeComponent(institution.trim())}',
       );
 
       if (response['status'] == 'success') {
@@ -81,6 +99,19 @@ class ExamService {
     try {
       return await _baseService.post(
         AppConfig.PUBLISH_EXAM,
+        body: {'exam_id': examId},
+      );
+    } catch (e) {
+      if (e is AppException) rethrow;
+      throw NetworkException(message: e.toString());
+    }
+  }
+
+  /// Close exam
+  Future<Map<String, dynamic>> closeExam(String examId) async {
+    try {
+      return await _baseService.post(
+        AppConfig.CLOSE_EXAM,
         body: {'exam_id': examId},
       );
     } catch (e) {

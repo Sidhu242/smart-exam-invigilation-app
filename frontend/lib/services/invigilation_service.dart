@@ -1,61 +1,95 @@
 import 'dart:async';
 import 'base_service.dart';
-import '../config/constants.dart';
+
+enum ViolationType {
+  noFace,
+  multipleFaces,
+  tabSwitch,
+  fullscreenExit,
+  appMinimized,
+}
 
 class InvigilationService {
   static final InvigilationService _instance = InvigilationService._internal();
+
   final BaseService _baseService = BaseService();
 
   factory InvigilationService() => _instance;
 
   InvigilationService._internal();
 
-  int _warningCount = 0;
-  Timer? _statusTimer;
+  int _violationCount = 0;
+  Timer? _faceCheckTimer;
 
-  int get warningCount => _warningCount;
+  final int maxViolations = 2;
 
-  /// Start monitoring
-  void startMonitoring(String examId, String studentId) {
-    _warningCount = 0;
-    _statusTimer = Timer.periodic(Duration(seconds: 30), (_) {
-      _checkStatus(examId, studentId);
-    });
+  Function()? onAutoSubmit;
+  Function(int count)? onViolationUpdate;
+
+  int get violationCount => _violationCount;
+
+  // ============================
+  // Start Monitoring
+  // ============================
+
+  void startMonitoring() {
+    _violationCount = 0;
   }
 
-  /// Stop monitoring
   void stopMonitoring() {
-    _statusTimer?.cancel();
+    _faceCheckTimer?.cancel();
   }
 
-  /// Log tab switch
-  Future<void> logTabSwitch(String examId, String studentId) async {
+  // ============================
+  // MAIN VIOLATION METHOD
+  // ============================
+
+  Future<void> registerViolation(
+    ViolationType type,
+    String examId,
+    String studentId,
+  ) async {
+    _violationCount++;
+
+    print("Violation detected: $type");
+    print("Total violations: $_violationCount");
+    print("🚨 registerViolation called with type: $type");
+
+    // Notify UI
+    if (onViolationUpdate != null) {
+      onViolationUpdate!(_violationCount);
+    }
+
+    // Send to backend
+    await _sendViolationToBackend(type, examId, studentId);
+  }
+
+  // ============================
+  // Backend Logging
+  // ============================
+
+  Future<void> _sendViolationToBackend(
+    ViolationType type,
+    String examId,
+    String studentId,
+  ) async {
     try {
-      await _baseService.post(
-        AppConfig.LOG_TAB_SWITCH,
+      print("🔥 Sending violation to backend...");
+
+      final response = await _baseService.post(
+        "/log_violation",
         body: {
-          'exam_id': examId,
-          'student_id': studentId,
+          "student_id": studentId,
+          "exam_id": examId,
+          "violation_type": type.name,
+          "confidence": 1.0,
+          "screenshot": "",
         },
       );
-      _warningCount++;
-    } catch (e) {
-      print('Tab switch log error: $e');
-    }
-  }
 
-  /// Check status
-  Future<void> _checkStatus(String examId, String studentId) async {
-    try {
-      final response = await _baseService.get(
-        '${AppConfig.GET_WARNINGS}/$examId?student_id=$studentId',
-      );
-
-      if (response['warnings'] != null) {
-        _warningCount = (response['warnings'] as List).length;
-      }
+      print("✅ Backend response: $response");
     } catch (e) {
-      // Silent fail
+      print("❌ Violation log error: $e");
     }
   }
 }

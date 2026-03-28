@@ -44,8 +44,12 @@ class MLService {
       } else {
         final face = faces.first;
 
-        if (face.headEulerAngleY != null && face.headEulerAngleY!.abs() > 20) {
-          violation = 'head_turned';
+        if (face.headEulerAngleY != null && face.headEulerAngleY!.abs() > 25) {
+          violation = 'head_turned_side';
+        } else if (face.headEulerAngleX != null && (face.headEulerAngleX! > 15 || face.headEulerAngleX! < -20)) {
+          violation = 'head_turned_up_down';
+        } else if (face.headEulerAngleZ != null && face.headEulerAngleZ!.abs() > 30) {
+          violation = 'head_tilted';
         }
 
         if (face.leftEyeOpenProbability != null &&

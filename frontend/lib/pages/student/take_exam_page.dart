@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:go_router/go_router.dart';
@@ -11,6 +12,7 @@ import '../../services/invigilation_service.dart';
 import '../../widgets/exam_timer.dart';
 import '../../widgets/permission_dialog.dart';
 import '../../utlis/exceptions.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 import '../../config/constants.dart';
 import '../../config/globals.dart';
 
@@ -46,11 +48,17 @@ class _TakeExamPageState extends State<TakeExamPage>
   List<CameraDescription>? _cameras;
   bool _isSubmitting = false;
 
+  WebSocketChannel? _feedChannel;
+  Timer? _feedTimer;
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _checkAndRequestPermissions();
+    // Tab switch detection is handled via lifecycle or can be implemented with a listener if needed, 
+    // but for now we remove dart:html to avoid build issues.
+    // The invigilation service can handle this via platform channels if necessary.
   }
 
   Future<void> _checkAndRequestPermissions() async {
@@ -86,15 +94,21 @@ class _TakeExamPageState extends State<TakeExamPage>
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     _cameraController?.dispose();
+    _feedTimer?.cancel();
+    _feedChannel?.sink.close();
     _invigilationService.stopMonitoring();
     super.dispose();
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.paused) {
-      _invigilationService.logTabSwitch(widget.examId, widget.studentId);
-      _showWarning('Keep the app in focus during the exam!');
+    if (state == AppLifecycleState.hidden || state == AppLifecycleState.inactive || state == AppLifecycleState.paused) {
+      _invigilationService.registerViolation(
+        ViolationType.tabSwitch,
+        widget.examId,
+        widget.studentId,
+      );
+      _showWarning('VIOLATION: Tab switch or app minimized detected!');
     }
   }
 
@@ -106,11 +120,11 @@ class _TakeExamPageState extends State<TakeExamPage>
         _answers[q['id']] = '';
       }
 
-      if (!kIsWeb) {
-        await _initCamera();
-      }
+      await _initCamera();
 
-      _invigilationService.startMonitoring(widget.examId, widget.studentId);
+      _invigilationService.startMonitoring();
+      
+      _startLiveStreaming();
 
       setState(() {
         _questions = List<Map<String, dynamic>>.from(questions);
@@ -131,7 +145,6 @@ class _TakeExamPageState extends State<TakeExamPage>
 
       final permission = await Permission.camera.request();
       if (!permission.isGranted) {
-        // Handle camera permission denial - just continue without camera
         debugPrint('Camera permission denied');
         return;
       }
@@ -161,6 +174,34 @@ class _TakeExamPageState extends State<TakeExamPage>
       );
     } catch (e) {
       print('Answer save failed: $e');
+    }
+  }
+
+  void _startLiveStreaming() {
+    final wsUrl = '${AppConfig.WS_URL}/ws/student_feed/${widget.examId}/${widget.studentId}';
+    try {
+      _feedChannel = WebSocketChannel.connect(Uri.parse(wsUrl));
+      _feedTimer = Timer.periodic(const Duration(seconds: 3), (timer) async {
+        if (_cameraController != null && 
+            _cameraController!.value.isInitialized && 
+            !_isSubmitting) {
+          try {
+            final image = await _cameraController!.takePicture();
+            final bytes = await image.readAsBytes();
+            final base64String = base64Encode(bytes);
+            
+            _feedChannel?.sink.add(jsonEncode({
+              'student_id': widget.studentId,
+              'student_name': GlobalState.userName,
+              'frame': base64String,
+            }));
+          } catch (e) {
+            debugPrint('Stream frame error: $e');
+          }
+        }
+      });
+    } catch (e) {
+      debugPrint('Stream connection error: $e');
     }
   }
 
@@ -266,7 +307,7 @@ class _TakeExamPageState extends State<TakeExamPage>
                   width: 80,
                   height: 80,
                   decoration: BoxDecoration(
-                    color: Colors.red.withValues(alpha: 0.1),
+                    color: Colors.red.withOpacity(0.2),
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
@@ -304,14 +345,16 @@ class _TakeExamPageState extends State<TakeExamPage>
       );
     }
 
-    final cameraActive = !kIsWeb &&
-        _cameraController != null &&
+    final cameraActive = _cameraController != null &&
         _cameraController!.value.isInitialized;
 
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) return;
+        
         // Show confirmation dialog before leaving exam
-        final result = await showDialog<bool>(
+        final shouldPop = await showDialog<bool>(
           context: context,
           builder: (context) => AlertDialog(
             title: const Text('Leave Exam?'),
@@ -330,7 +373,10 @@ class _TakeExamPageState extends State<TakeExamPage>
             ],
           ),
         );
-        return result ?? false;
+        
+        if (shouldPop == true && context.mounted) {
+           context.pop();
+        }
       },
       child: Scaffold(
         appBar: AppBar(

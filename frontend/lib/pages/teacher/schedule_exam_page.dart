@@ -47,11 +47,15 @@ class _ScheduleExamPageState extends State<ScheduleExamPage> {
         _selectedTime!.minute,
       );
 
+      final institution = GlobalState.institution.isNotEmpty 
+          ? GlobalState.institution 
+          : 'Standard Institution'; // Fallback to avoid 400
+
       await _examService.createExam(
         id: _generateExamId(),
         name: _examNameController.text,
         dateTime: dateTime.toString().split('.')[0],
-        institution: GlobalState.institution,
+        institution: institution,
       );
 
       if (mounted) {

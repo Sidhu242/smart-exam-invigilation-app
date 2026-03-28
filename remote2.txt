@@ -1,0 +1,8 @@
+hi	https://github.com/23bcar0273-stack/smart-exam.git (fetch)
+hi	https://github.com/23bcar0273-stack/smart-exam.git (push)
+ll	https://github.com/23bcar0273-stack/smart-exam-invigilation.git (fetch)
+ll	https://github.com/23bcar0273-stack/smart-exam-invigilation.git (push)
+orginal	https://github.com/23bcar0273-stack/smart-exam.git (fetch)
+orginal	https://github.com/23bcar0273-stack/smart-exam.git (push)
+smart-exam-(new)	https://github.com/23bcar0273-stack/smart-exam-invigilation.git (fetch)
+smart-exam-(new)	https://github.com/23bcar0273-stack/smart-exam-invigilation.git (push)

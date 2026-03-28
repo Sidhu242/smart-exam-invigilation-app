@@ -8,9 +8,65 @@ import base64
 import numpy as np
 import cv2
 
+from flask_sock import Sock
+
 # Initialize Flask app
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
+sock = Sock(app)
+
+live_flags = {} # {exam_id: set(teacher_sockets)}
+live_monitors = {} # {exam_id: set(teacher_sockets)}
+
+@sock.route('/ws/flags/<exam_id>')
+def flags_websocket(ws, exam_id):
+    if exam_id not in live_flags:
+        live_flags[exam_id] = set()
+    live_flags[exam_id].add(ws)
+    try:
+        while True:
+            msg = ws.receive()
+    except Exception:
+        pass
+    finally:
+        live_flags[exam_id].remove(ws)
+        if not live_flags[exam_id]:
+            del live_flags[exam_id]
+
+@sock.route('/ws/live_monitor/<exam_id>')
+def live_monitor_websocket(ws, exam_id):
+    if exam_id not in live_monitors:
+        live_monitors[exam_id] = set()
+    live_monitors[exam_id].add(ws)
+    try:
+        while True:
+            msg = ws.receive()
+    except Exception:
+        pass
+    finally:
+        live_monitors[exam_id].remove(ws)
+        if not live_monitors[exam_id]:
+            del live_monitors[exam_id]
+
+@sock.route('/ws/student_feed/<exam_id>/<student_id>')
+def student_feed_websocket(ws, exam_id, student_id):
+    try:
+        while True:
+            frame_data = ws.receive()
+            if frame_data and exam_id in live_monitors:
+                # Payload: {student_id, student_name, frame (base64)}
+                # For brevity, we just relay what student sends
+                dead_sockets = set()
+                for monitor_ws in live_monitors[exam_id]:
+                    try:
+                        monitor_ws.send(frame_data)
+                    except Exception:
+                        dead_sockets.add(monitor_ws)
+                
+                for dead in dead_sockets:
+                    live_monitors[exam_id].discard(dead)
+    except Exception:
+        pass
 
 # Database
 DATABASE = 'exam_system.db'
@@ -44,6 +100,7 @@ def init_db():
             exam_datetime TEXT,
             institution TEXT NOT NULL,
             published INTEGER DEFAULT 0,
+            status TEXT DEFAULT 'active',
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )
     ''')
@@ -108,6 +165,15 @@ init_db()
 # =====================================================
 # AUTHENTICATION ROUTES
 # =====================================================
+
+@app.route('/students', methods=['GET'])
+def get_students():
+    conn = sqlite3.connect(DATABASE)
+    c = conn.cursor()
+    c.execute("SELECT id, name, institution FROM users WHERE role = 'student'")
+    students = [{"id": r[0], "name": r[1], "institution": r[2]} for r in c.fetchall()]
+    conn.close()
+    return jsonify(students)
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -205,8 +271,8 @@ def create_exam():
         
         try:
             c.execute(
-                'INSERT INTO exams (id, name, exam_datetime, institution) VALUES (?, ?, ?, ?)',
-                (exam_id, name, exam_datetime, institution)
+                'INSERT INTO exams (id, name, exam_datetime, institution, status) VALUES (?, ?, ?, ?, ?)',
+                (exam_id, name, exam_datetime, institution, 'active')
             )
             conn.commit()
             return jsonify({'status': 'success', 'message': 'Exam created'}), 201
@@ -229,15 +295,49 @@ def get_exams():
         conn.row_factory = sqlite3.Row
         c = conn.cursor()
         
+        # Use UPPER() on both sides for case-insensitive matching, also trim whitespace
+        institution_clean = institution.strip()
         c.execute(
-            'SELECT * FROM exams WHERE institution = ? AND published = ?',
-            (institution, int(published))
+            'SELECT * FROM exams WHERE UPPER(TRIM(institution)) = UPPER(?) AND published = ?',
+            (institution_clean, int(published))
         )
         exams = [dict(row) for row in c.fetchall()]
         conn.close()
         
         return jsonify({'status': 'success', 'exams': exams}), 200
         
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
+@app.route('/debug_exams', methods=['GET'])
+def debug_exams():
+    """Debug: list all exams in the database (remove in production)"""
+    try:
+        conn = sqlite3.connect(DATABASE)
+        conn.row_factory = sqlite3.Row
+        c = conn.cursor()
+        c.execute("SELECT id, name, institution, published FROM exams")
+        exams = [dict(row) for row in c.fetchall()]
+        conn.close()
+        return jsonify({'status': 'success', 'exams': exams, 'count': len(exams)}), 200
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
+@app.route('/get_all_exams', methods=['GET'])
+def get_all_exams():
+    """Get ALL exams for an institution (both published and unpublished) - for teacher view"""
+    try:
+        institution = request.args.get('institution', '').strip()
+        conn = sqlite3.connect(DATABASE)
+        conn.row_factory = sqlite3.Row
+        c = conn.cursor()
+        c.execute(
+            'SELECT * FROM exams WHERE UPPER(TRIM(institution)) = UPPER(?)',
+            (institution,)
+        )
+        exams = [dict(row) for row in c.fetchall()]
+        conn.close()
+        return jsonify({'status': 'success', 'exams': exams}), 200
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
@@ -256,6 +356,25 @@ def publish_exam():
         
         return jsonify({'status': 'success', 'message': 'Exam published'}), 200
         
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
+@app.route('/close_exam', methods=['POST'])
+def close_exam():
+    """Manually close an active exam"""
+    try:
+        data = request.get_json()
+        exam_id = data.get('exam_id')
+        
+        if not exam_id:
+            return jsonify({'status': 'error', 'message': 'Exam ID required'}), 400
+            
+        conn = sqlite3.connect(DATABASE)
+        c = conn.cursor()
+        c.execute("UPDATE exams SET status = 'finished' WHERE id = ?", (exam_id,))
+        conn.commit()
+        conn.close()
+        return jsonify({'status': 'success', 'message': 'Exam closed'}), 200
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
@@ -463,6 +582,54 @@ def log_tab_switch():
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
+@app.route('/log_violation', methods=['POST'])
+def log_violation():
+    """Log any violation and broadcast via WebSockets"""
+    try:
+        data = request.get_json()
+        student_id = data.get('student_id')
+        exam_id = data.get('exam_id')
+        violation_type = data.get('violation_type', 'Unknown Constraint')
+        
+        conn = sqlite3.connect(DATABASE)
+        c = conn.cursor()
+        c.execute(
+            'INSERT INTO warnings (student_id, exam_id, message) VALUES (?, ?, ?)',
+            (student_id, exam_id, violation_type)
+        )
+        
+        # Get student name to send via websocket
+        c.execute('SELECT name FROM users WHERE id = ?', (student_id,))
+        user_row = c.fetchone()
+        student_name = user_row[0] if user_row else student_id
+        
+        conn.commit()
+        conn.close()
+        
+        # Broadcast flag to live teachers
+        alert = {
+            'student_id': student_id,
+            'student_name': student_name,
+            'violation_type': violation_type,
+            'timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        }
+        
+        if exam_id in live_flags:
+            dead_sockets = set()
+            for monitor_ws in live_flags[exam_id]:
+                try:
+                    monitor_ws.send(json.dumps(alert))
+                except Exception:
+                    dead_sockets.add(monitor_ws)
+                    
+            for dead in dead_sockets:
+                live_flags[exam_id].discard(dead)
+        
+        return jsonify({'status': 'success'}), 200
+        
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
 @app.route('/get_warnings/<exam_id>', methods=['GET'])
 def get_warnings(exam_id):
     """Get warnings for exam"""
@@ -600,5 +767,8 @@ def server_error(e):
 # RUN
 # =====================================================
 
+
+
 if __name__ == '__main__':
+    # Use standard Flask run, or use Waitress/Gunicorn for production 
     app.run(host='127.0.0.1', port=5000, debug=True)

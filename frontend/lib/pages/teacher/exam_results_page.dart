@@ -36,20 +36,27 @@ class _ExamResultsPageState extends State<ExamResultsPage>
   Future<void> _loadData() async {
     try {
       final results = await _submissionService.getResults(widget.examId);
-      final violations = _generateMockViolations(results);
+      final violationsList = await _submissionService.getViolations(widget.examId);
+      
+      // Parse violations from API
+      // Backend returns: [{id, student_id, exam_id, message, timestamp}]
+      final parsedViolations = violationsList.map((v) {
+        return {
+          'title': v['message'] ?? 'Unknown Violation',
+          'description': 'Student ID: ${v['student_id']}',
+          'timestamp': v['timestamp'] ?? 'Unknown Time',
+          'severity': 'high', // Map depending on message if needed
+        };
+      }).toList();
 
       setState(() {
         _results = results;
-        _violations = violations;
+        _violations = parsedViolations;
         _isLoading = false;
       });
     } catch (e) {
       setState(() => _isLoading = false);
     }
-  }
-
-  List<dynamic> _generateMockViolations(List<dynamic> results) {
-    return [];
   }
 
   @override
@@ -91,7 +98,7 @@ class _ExamResultsPageState extends State<ExamResultsPage>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.info_outline,
-                size: 48, color: Colors.grey.withOpacity(0.5)),
+                size: 48, color: Colors.grey.withValues(alpha: 0.5)),
             const SizedBox(height: 16),
             const Text('No results available',
                 style: TextStyle(color: Colors.grey)),

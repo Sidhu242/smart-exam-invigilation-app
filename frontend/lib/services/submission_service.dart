@@ -91,4 +91,22 @@ class SubmissionService {
       throw NetworkException(message: e.toString());
     }
   }
+
+  /// Get violations
+  Future<List<dynamic>> getViolations(String examId) async {
+    try {
+      final response = await _baseService.get(
+        '/get_warnings/$examId',
+      );
+
+      if (response['status'] == 'success') {
+        return response['warnings'] ?? [];
+      } else {
+        throw DataException(message: 'Failed to fetch violations');
+      }
+    } catch (e) {
+      if (e is AppException) rethrow;
+      throw NetworkException(message: e.toString());
+    }
+  }
 }

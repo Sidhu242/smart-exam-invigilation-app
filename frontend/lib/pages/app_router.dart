@@ -9,6 +9,7 @@ import 'teacher/schedule_exam_page.dart';
 import 'teacher/manage_exams_page.dart';
 import 'teacher/add_question_page.dart';
 import 'teacher/exam_results_page.dart';
+import 'teacher/live_monitor_page.dart';
 
 class AppRouter {
   static final router = GoRouter(
@@ -99,6 +100,13 @@ class AppRouter {
         builder: (context, state) {
           final examId = state.pathParameters['examId'] ?? '';
           return ExamResultsPage(examId: examId);
+        },
+      ),
+      GoRoute(
+        path: '/live_monitor/:examId',
+        builder: (context, state) {
+          final examId = state.pathParameters['examId'] ?? '';
+          return LiveMonitorPage(examId: examId);
         },
       ),
     ],
