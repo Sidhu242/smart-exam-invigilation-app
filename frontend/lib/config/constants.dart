@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppConfig {
   // Server Configuration
-  static const String SERVER_URL = "http://localhost:5000";
+  static const String SERVER_URL = "https://sidhu2005-seis-backend.hf.space";
   static String get WS_URL => SERVER_URL.replaceFirst('http', 'ws');
   static const Duration CONNECT_TIMEOUT = Duration(seconds: 30);
   static const Duration RECEIVE_TIMEOUT = Duration(seconds: 30);

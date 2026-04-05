@@ -17,7 +17,7 @@ DATABASE_URL = os.environ.get("DATABASE_URL")
 
 # Initialize Flask app
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app, origins="*")
 sock = Sock(app)
 
 live_flags = {} # {exam_id: set(teacher_sockets)}
