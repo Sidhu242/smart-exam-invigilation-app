@@ -21,9 +21,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the rest of the backend files
 COPY . .
 
-# Expose Render's default port (and make it flexible)
-ENV PORT=5000
-EXPOSE $PORT
+# Expose Hugging Face Spaces default port
+ENV PORT=7860
+EXPOSE 7860
 
 # Start application using Gunicorn with threads to support WebSockets (flask-sock)
-CMD gunicorn -w 1 --threads 100 -b 0.0.0.0:$PORT server:app
+CMD gunicorn -w 1 --threads 100 -b 0.0.0.0:7860 server:app
