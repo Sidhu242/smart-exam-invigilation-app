@@ -1,15 +1,19 @@
 #!/usr/bin/env python3
-import sqlite3
+import psycopg2
+from psycopg2.extras import RealDictCursor
+import os
+from dotenv import load_dotenv
 
-db_path = "exam_system.db"
+load_dotenv()
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
-conn = sqlite3.connect(db_path)
-conn.row_factory = sqlite3.Row
-c = conn.cursor()
+conn = psycopg2.connect(DATABASE_URL)
+conn.autocommit = True
+c = conn.cursor(cursor_factory=RealDictCursor)
 
 # Test the exact query from server.py
 c.execute(
-    'SELECT id, name, role, institution FROM users WHERE id = ? AND password = ?',
+    'SELECT id, name, role, institution FROM users WHERE id = %s AND password = %s',
     ('t1', 'pass123')
 )
 user = c.fetchone()
@@ -22,10 +26,9 @@ else:
     print("✗ Teacher query returned no results")
     
     # Debug: Check with just ID
-    conn = sqlite3.connect(db_path)
-    conn.row_factory = sqlite3.Row
-    c = conn.cursor()
-    c.execute('SELECT id, name, password, role FROM users WHERE id = ?', ('t1',))
+    conn = psycopg2.connect(DATABASE_URL)
+    c = conn.cursor(cursor_factory=RealDictCursor)
+    c.execute('SELECT id, name, password, role FROM users WHERE id = %s', ('t1',))
     debug_user = c.fetchone()
     conn.close()
     

@@ -1,8 +1,15 @@
 services:
   - type: web
     name: seis-backend
-    env: docker
+    env: python
     rootDir: backend
-    plan: free # Change this to standard if free tier fails with memory limits due to torch
-    dockerContext: .
-    healthCheckPath: /debug_exams
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn server:app
+    healthCheckPath: /students # Using a basic GET route to check health
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+        # Needs to be set manually in Render's dashboard for your Supabase Postgres URL
+      - key: PORT
+        value: 10000

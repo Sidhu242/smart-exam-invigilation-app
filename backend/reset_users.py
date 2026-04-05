@@ -1,18 +1,12 @@
 #!/usr/bin/env python3
-import sqlite3
+import psycopg2
 import os
+from dotenv import load_dotenv
 
-db_path = "exam_system.db"
+load_dotenv()
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
-# Check file modification time
-if os.path.exists(db_path):
-    stat = os.stat(db_path)
-    print(f"Database file last modified: {stat.st_mtime}")
-else:
-    print("Database file does not exist!")
-    exit(1)
-
-conn = sqlite3.connect(db_path)
+conn = psycopg2.connect(DATABASE_URL)
 c = conn.cursor()
 
 # Delete existing users and recreate
@@ -21,9 +15,9 @@ c.execute("DELETE FROM users")
 
 # Insert fresh users
 print("Inserting fresh users...")
-c.execute("INSERT INTO users (id, name, password, role, institution) VALUES (?, ?, ?, ?, ?)",
+c.execute("INSERT INTO users (id, name, password, role, institution) VALUES (%s, %s, %s, %s, %s)",
           ('s1', 'Alice', 'pass123', 'student', 'Test School'))
-c.execute("INSERT INTO users (id, name, password, role, institution) VALUES (?, ?, ?, ?, ?)",
+c.execute("INSERT INTO users (id, name, password, role, institution) VALUES (%s, %s, %s, %s, %s)",
           ('t1', 'Mr. John', 'pass123', 'teacher', 'Test School'))
 conn.commit()
 

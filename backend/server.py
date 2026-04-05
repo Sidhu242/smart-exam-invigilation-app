@@ -1,6 +1,8 @@
-import sqlite3
+import psycopg2
+from psycopg2.extras import RealDictCursor
 import json
 import os
+from dotenv import load_dotenv
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from datetime import datetime, timedelta
@@ -9,6 +11,9 @@ import numpy as np
 import cv2
 
 from flask_sock import Sock
+
+load_dotenv()
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -68,16 +73,17 @@ def student_feed_websocket(ws, exam_id, student_id):
     except Exception:
         pass
 
-# Database
-DATABASE = 'exam_system.db'
+# Database Helper
+def get_db_connection():
+    return psycopg2.connect(DATABASE_URL)
 
 # =====================================================
 # DATABASE INITIALIZATION
 # =====================================================
 
 def init_db():
-    """Initialize SQLite database with required tables"""
-    conn = sqlite3.connect(DATABASE)
+    """Initialize PostgreSQL database with required tables"""
+    conn = get_db_connection()
     c = conn.cursor()
     
     # Users table
@@ -88,7 +94,7 @@ def init_db():
             password TEXT NOT NULL,
             role TEXT NOT NULL,
             institution TEXT NOT NULL,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     ''')
     
@@ -101,7 +107,7 @@ def init_db():
             institution TEXT NOT NULL,
             published INTEGER DEFAULT 0,
             status TEXT DEFAULT 'active',
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     ''')
     
@@ -114,7 +120,7 @@ def init_db():
             question_type TEXT NOT NULL,
             options TEXT,
             correct_answer TEXT,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (exam_id) REFERENCES exams(id)
         )
     ''')
@@ -122,12 +128,12 @@ def init_db():
     # Student Answers table
     c.execute('''
         CREATE TABLE IF NOT EXISTS student_answers (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id SERIAL PRIMARY KEY,
             student_id TEXT NOT NULL,
             exam_id TEXT NOT NULL,
             question_id TEXT NOT NULL,
             answer_text TEXT,
-            submitted_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             UNIQUE(student_id, exam_id, question_id)
         )
     ''')
@@ -135,24 +141,24 @@ def init_db():
     # Warnings/Violations table
     c.execute('''
         CREATE TABLE IF NOT EXISTS warnings (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id SERIAL PRIMARY KEY,
             student_id TEXT NOT NULL,
             exam_id TEXT NOT NULL,
             message TEXT NOT NULL,
-            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+            timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     ''')
     
     # Exam Results table
     c.execute('''
         CREATE TABLE IF NOT EXISTS exam_results (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id SERIAL PRIMARY KEY,
             student_id TEXT NOT NULL,
             exam_id TEXT NOT NULL,
             score REAL,
             total_questions INTEGER,
             correct_answers INTEGER,
-            submitted_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     ''')
     
@@ -168,10 +174,10 @@ init_db()
 
 @app.route('/students', methods=['GET'])
 def get_students():
-    conn = sqlite3.connect(DATABASE)
-    c = conn.cursor()
+    conn = get_db_connection()
+    c = conn.cursor(cursor_factory=RealDictCursor)
     c.execute("SELECT id, name, institution FROM users WHERE role = 'student'")
-    students = [{"id": r[0], "name": r[1], "institution": r[2]} for r in c.fetchall()]
+    students = [{"id": r["id"], "name": r["name"], "institution": r["institution"]} for r in c.fetchall()]
     conn.close()
     return jsonify(students)
 
@@ -189,12 +195,11 @@ def login():
         if not user_id or not password:
             return jsonify({'status': 'error', 'message': 'ID and password required'}), 400
         
-        conn = sqlite3.connect(DATABASE)
-        conn.row_factory = sqlite3.Row
-        c = conn.cursor()
+        conn = get_db_connection()
+        c = conn.cursor(cursor_factory=RealDictCursor)
         
         c.execute(
-            'SELECT id, name, role, institution FROM users WHERE id = ? AND password = ?',
+            'SELECT id, name, role, institution FROM users WHERE id = %s AND password = %s',
             (user_id, password)
         )
         user = c.fetchone()
@@ -231,17 +236,17 @@ def signup():
         if not all([user_id, name, password, role, institution]):
             return jsonify({'status': 'error', 'message': 'All fields required'}), 400
         
-        conn = sqlite3.connect(DATABASE)
+        conn = get_db_connection()
         c = conn.cursor()
         
         try:
             c.execute(
-                'INSERT INTO users (id, name, password, role, institution) VALUES (?, ?, ?, ?, ?)',
+                'INSERT INTO users (id, name, password, role, institution) VALUES (%s, %s, %s, %s, %s)',
                 (user_id, name, password, role, institution)
             )
             conn.commit()
             return jsonify({'status': 'success', 'message': 'Account created'}), 201
-        except sqlite3.IntegrityError:
+        except psycopg2.IntegrityError:
             return jsonify({'status': 'error', 'message': 'User already exists'}), 409
         finally:
             conn.close()
@@ -266,17 +271,17 @@ def create_exam():
         if not all([exam_id, name, institution]):
             return jsonify({'status': 'error', 'message': 'Missing fields'}), 400
         
-        conn = sqlite3.connect(DATABASE)
+        conn = get_db_connection()
         c = conn.cursor()
         
         try:
             c.execute(
-                'INSERT INTO exams (id, name, exam_datetime, institution, status) VALUES (?, ?, ?, ?, ?)',
+                'INSERT INTO exams (id, name, exam_datetime, institution, status) VALUES (%s, %s, %s, %s, %s)',
                 (exam_id, name, exam_datetime, institution, 'active')
             )
             conn.commit()
             return jsonify({'status': 'success', 'message': 'Exam created'}), 201
-        except sqlite3.IntegrityError:
+        except psycopg2.IntegrityError:
             return jsonify({'status': 'error', 'message': 'Exam ID exists'}), 409
         finally:
             conn.close()
@@ -291,14 +296,12 @@ def get_exams():
         institution = request.args.get('institution', '')
         published = request.args.get('published', '1')
         
-        conn = sqlite3.connect(DATABASE)
-        conn.row_factory = sqlite3.Row
-        c = conn.cursor()
+        conn = get_db_connection()
+        c = conn.cursor(cursor_factory=RealDictCursor)
         
-        # Use UPPER() on both sides for case-insensitive matching, also trim whitespace
         institution_clean = institution.strip()
         c.execute(
-            'SELECT * FROM exams WHERE UPPER(TRIM(institution)) = UPPER(?) AND published = ?',
+            'SELECT * FROM exams WHERE UPPER(TRIM(institution)) = UPPER(%s) AND published = %s',
             (institution_clean, int(published))
         )
         exams = [dict(row) for row in c.fetchall()]
@@ -313,9 +316,8 @@ def get_exams():
 def debug_exams():
     """Debug: list all exams in the database (remove in production)"""
     try:
-        conn = sqlite3.connect(DATABASE)
-        conn.row_factory = sqlite3.Row
-        c = conn.cursor()
+        conn = get_db_connection()
+        c = conn.cursor(cursor_factory=RealDictCursor)
         c.execute("SELECT id, name, institution, published FROM exams")
         exams = [dict(row) for row in c.fetchall()]
         conn.close()
@@ -328,11 +330,10 @@ def get_all_exams():
     """Get ALL exams for an institution (both published and unpublished) - for teacher view"""
     try:
         institution = request.args.get('institution', '').strip()
-        conn = sqlite3.connect(DATABASE)
-        conn.row_factory = sqlite3.Row
-        c = conn.cursor()
+        conn = get_db_connection()
+        c = conn.cursor(cursor_factory=RealDictCursor)
         c.execute(
-            'SELECT * FROM exams WHERE UPPER(TRIM(institution)) = UPPER(?)',
+            'SELECT * FROM exams WHERE UPPER(TRIM(institution)) = UPPER(%s)',
             (institution,)
         )
         exams = [dict(row) for row in c.fetchall()]
@@ -348,9 +349,9 @@ def publish_exam():
         data = request.get_json()
         exam_id = data.get('exam_id')
         
-        conn = sqlite3.connect(DATABASE)
+        conn = get_db_connection()
         c = conn.cursor()
-        c.execute('UPDATE exams SET published = 1 WHERE id = ?', (exam_id,))
+        c.execute('UPDATE exams SET published = 1 WHERE id = %s', (exam_id,))
         conn.commit()
         conn.close()
         
@@ -369,9 +370,9 @@ def close_exam():
         if not exam_id:
             return jsonify({'status': 'error', 'message': 'Exam ID required'}), 400
             
-        conn = sqlite3.connect(DATABASE)
+        conn = get_db_connection()
         c = conn.cursor()
-        c.execute("UPDATE exams SET status = 'finished' WHERE id = ?", (exam_id,))
+        c.execute("UPDATE exams SET status = 'finished' WHERE id = %s", (exam_id,))
         conn.commit()
         conn.close()
         return jsonify({'status': 'success', 'message': 'Exam closed'}), 200
@@ -382,9 +383,9 @@ def close_exam():
 def delete_exam(exam_id):
     """Delete exam"""
     try:
-        conn = sqlite3.connect(DATABASE)
+        conn = get_db_connection()
         c = conn.cursor()
-        c.execute('DELETE FROM exams WHERE id = ?', (exam_id,))
+        c.execute('DELETE FROM exams WHERE id = %s', (exam_id,))
         conn.commit()
         conn.close()
         
@@ -413,7 +414,7 @@ def add_question():
         if not all([q_id, exam_id, question_text, question_type]):
             return jsonify({'status': 'error', 'message': 'Missing fields'}), 400
         
-        conn = sqlite3.connect(DATABASE)
+        conn = get_db_connection()
         c = conn.cursor()
         
         try:
@@ -424,19 +425,19 @@ def add_question():
                     return jsonify({'status': 'error', 'message': 'MCQ requires options'}), 400
                 
                 c.execute(
-                    'INSERT INTO questions (id, exam_id, question_text, question_type, options, correct_answer) VALUES (?, ?, ?, ?, ?, ?)',
+                    'INSERT INTO questions (id, exam_id, question_text, question_type, options, correct_answer) VALUES (%s, %s, %s, %s, %s, %s)',
                     (q_id, exam_id, question_text, 'mcq', json.dumps(options), correct_answer)
                 )
             else:
                 c.execute(
-                    'INSERT INTO questions (id, exam_id, question_text, question_type) VALUES (?, ?, ?, ?)',
+                    'INSERT INTO questions (id, exam_id, question_text, question_type) VALUES (%s, %s, %s, %s)',
                     (q_id, exam_id, question_text, 'essay')
                 )
             
             conn.commit()
             return jsonify({'status': 'success', 'message': 'Question added'}), 201
             
-        except sqlite3.IntegrityError:
+        except psycopg2.IntegrityError:
             return jsonify({'status': 'error', 'message': 'Question ID exists'}), 409
         finally:
             conn.close()
@@ -448,11 +449,10 @@ def add_question():
 def get_questions(exam_id):
     """Get all questions for exam"""
     try:
-        conn = sqlite3.connect(DATABASE)
-        conn.row_factory = sqlite3.Row
-        c = conn.cursor()
+        conn = get_db_connection()
+        c = conn.cursor(cursor_factory=RealDictCursor)
         
-        c.execute('SELECT * FROM questions WHERE exam_id = ?', (exam_id,))
+        c.execute('SELECT * FROM questions WHERE exam_id = %s', (exam_id,))
         questions = []
         
         for row in c.fetchall():
@@ -487,11 +487,14 @@ def submit_answer():
         if not all([student_id, exam_id, question_id]):
             return jsonify({'status': 'error', 'message': 'Missing fields'}), 400
         
-        conn = sqlite3.connect(DATABASE)
+        conn = get_db_connection()
         c = conn.cursor()
         
         c.execute(
-            'INSERT OR REPLACE INTO student_answers (student_id, exam_id, question_id, answer_text) VALUES (?, ?, ?, ?)',
+            '''INSERT INTO student_answers (student_id, exam_id, question_id, answer_text) 
+               VALUES (%s, %s, %s, %s)
+               ON CONFLICT (student_id, exam_id, question_id) 
+               DO UPDATE SET answer_text = EXCLUDED.answer_text, submitted_at = CURRENT_TIMESTAMP''',
             (student_id, exam_id, question_id, answer_text)
         )
         conn.commit()
@@ -514,12 +517,11 @@ def submit_exam():
         if not student_id or not exam_id:
             return jsonify({'status': 'error', 'message': 'Missing student or exam ID'}), 400
         
-        conn = sqlite3.connect(DATABASE)
-        conn.row_factory = sqlite3.Row
-        c = conn.cursor()
+        conn = get_db_connection()
+        c = conn.cursor(cursor_factory=RealDictCursor)
         
         # Get all questions
-        c.execute('SELECT * FROM questions WHERE exam_id = ?', (exam_id,))
+        c.execute('SELECT * FROM questions WHERE exam_id = %s', (exam_id,))
         questions = c.fetchall()
         
         total = len(questions)
@@ -539,7 +541,7 @@ def submit_exam():
         
         # Save result
         c.execute(
-            'INSERT INTO exam_results (student_id, exam_id, score, total_questions, correct_answers) VALUES (?, ?, ?, ?, ?)',
+            'INSERT INTO exam_results (student_id, exam_id, score, total_questions, correct_answers) VALUES (%s, %s, %s, %s, %s)',
             (student_id, exam_id, score, total, correct)
         )
         conn.commit()
@@ -568,10 +570,10 @@ def log_tab_switch():
         student_id = data.get('student_id')
         exam_id = data.get('exam_id')
         
-        conn = sqlite3.connect(DATABASE)
+        conn = get_db_connection()
         c = conn.cursor()
         c.execute(
-            'INSERT INTO warnings (student_id, exam_id, message) VALUES (?, ?, ?)',
+            'INSERT INTO warnings (student_id, exam_id, message) VALUES (%s, %s, %s)',
             (student_id, exam_id, 'Tab/App switch detected')
         )
         conn.commit()
@@ -591,17 +593,17 @@ def log_violation():
         exam_id = data.get('exam_id')
         violation_type = data.get('violation_type', 'Unknown Constraint')
         
-        conn = sqlite3.connect(DATABASE)
-        c = conn.cursor()
+        conn = get_db_connection()
+        c = conn.cursor(cursor_factory=RealDictCursor)
         c.execute(
-            'INSERT INTO warnings (student_id, exam_id, message) VALUES (?, ?, ?)',
+            'INSERT INTO warnings (student_id, exam_id, message) VALUES (%s, %s, %s)',
             (student_id, exam_id, violation_type)
         )
         
         # Get student name to send via websocket
-        c.execute('SELECT name FROM users WHERE id = ?', (student_id,))
+        c.execute('SELECT name FROM users WHERE id = %s', (student_id,))
         user_row = c.fetchone()
-        student_name = user_row[0] if user_row else student_id
+        student_name = user_row['name'] if user_row else student_id
         
         conn.commit()
         conn.close()
@@ -636,17 +638,16 @@ def get_warnings(exam_id):
     try:
         student_id = request.args.get('student_id')
         
-        conn = sqlite3.connect(DATABASE)
-        conn.row_factory = sqlite3.Row
-        c = conn.cursor()
+        conn = get_db_connection()
+        c = conn.cursor(cursor_factory=RealDictCursor)
         
         if student_id:
             c.execute(
-                'SELECT * FROM warnings WHERE exam_id = ? AND student_id = ?',
+                'SELECT * FROM warnings WHERE exam_id = %s AND student_id = %s',
                 (exam_id, student_id)
             )
         else:
-            c.execute('SELECT * FROM warnings WHERE exam_id = ?', (exam_id,))
+            c.execute('SELECT * FROM warnings WHERE exam_id = %s', (exam_id,))
         
         warnings = [dict(row) for row in c.fetchall()]
         conn.close()
@@ -664,12 +665,11 @@ def get_warnings(exam_id):
 def get_exam_results(exam_id):
     """Get results for exam"""
     try:
-        conn = sqlite3.connect(DATABASE)
-        conn.row_factory = sqlite3.Row
-        c = conn.cursor()
+        conn = get_db_connection()
+        c = conn.cursor(cursor_factory=RealDictCursor)
         
         c.execute(
-            'SELECT * FROM exam_results WHERE exam_id = ? ORDER BY submitted_at DESC',
+            'SELECT * FROM exam_results WHERE exam_id = %s ORDER BY submitted_at DESC',
             (exam_id,)
         )
         results = [dict(row) for row in c.fetchall()]
@@ -684,12 +684,11 @@ def get_exam_results(exam_id):
 def get_summary(student_id):
     """Get student performance summary"""
     try:
-        conn = sqlite3.connect(DATABASE)
-        conn.row_factory = sqlite3.Row
-        c = conn.cursor()
+        conn = get_db_connection()
+        c = conn.cursor(cursor_factory=RealDictCursor)
         
         # Get user info
-        c.execute('SELECT institution FROM users WHERE id = ?', (student_id,))
+        c.execute('SELECT institution FROM users WHERE id = %s', (student_id,))
         user = c.fetchone()
         
         if not user:
@@ -699,28 +698,28 @@ def get_summary(student_id):
         
         # Completed exams
         c.execute(
-            'SELECT COUNT(DISTINCT exam_id) as count FROM exam_results WHERE student_id = ?',
+            'SELECT COUNT(DISTINCT exam_id) as count FROM exam_results WHERE student_id = %s',
             (student_id,)
         )
         completed = c.fetchone()['count'] or 0
         
         # Warnings
         c.execute(
-            'SELECT COUNT(*) as count FROM warnings WHERE student_id = ?',
+            'SELECT COUNT(*) as count FROM warnings WHERE student_id = %s',
             (student_id,)
         )
         warnings = c.fetchone()['count'] or 0
         
         # Accuracy
         c.execute(
-            'SELECT AVG(score) as avg_score FROM exam_results WHERE student_id = ?',
+            'SELECT AVG(score) as avg_score FROM exam_results WHERE student_id = %s',
             (student_id,)
         )
         accuracy = c.fetchone()['avg_score']
         
         # Upcoming exams
         c.execute(
-            'SELECT id, name, exam_datetime FROM exams WHERE institution = ? AND exam_datetime IS NOT NULL AND published = 1 ORDER BY exam_datetime ASC',
+            'SELECT id, name, exam_datetime FROM exams WHERE institution = %s AND exam_datetime IS NOT NULL AND published = 1 ORDER BY exam_datetime ASC',
             (institution,)
         )
         exams = c.fetchall()
@@ -770,5 +769,6 @@ def server_error(e):
 
 
 if __name__ == '__main__':
-    # Use standard Flask run, or use Waitress/Gunicorn for production 
-    app.run(host='127.0.0.1', port=5000, debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    # Bind to 0.0.0.0 and dynamically assign Port for cloud deployments
+    app.run(host='0.0.0.0', port=port, debug=False)

@@ -1,10 +1,16 @@
 #!/usr/bin/env python3
-import sqlite3
+import psycopg2
+from psycopg2.extras import RealDictCursor
 import urllib.request
 import urllib.error
 import json
 import sys
 import time
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
 print("="*50)
 print("COMPREHENSIVE LOGIN TEST")
@@ -12,10 +18,8 @@ print("="*50)
 
 # Step 1: Verify database
 print("\n[1] Checking database...")
-db_path = "exam_system.db"
-conn = sqlite3.connect(db_path)
-conn.row_factory = sqlite3.Row
-c = conn.cursor()
+conn = psycopg2.connect(DATABASE_URL)
+c = conn.cursor(cursor_factory=RealDictCursor)
 
 c.execute("SELECT id, password, role FROM users WHERE id IN ('s1', 't1') ORDER BY id")
 users = c.fetchall()
@@ -27,13 +31,12 @@ conn.close()
 # Step 2: Test SQL query directly
 print("\n[2] Testing SQL query directly...")
 try:
-    conn = sqlite3.connect(db_path)
-    conn.row_factory = sqlite3.Row
-    c = conn.cursor()
+    conn = psycopg2.connect(DATABASE_URL)
+    c = conn.cursor(cursor_factory=RealDictCursor)
     
     # Try both students
     for user_id in ['s1', 't1']:
-        c.execute("SELECT id, name, role FROM users WHERE id = ? AND password = ?", (user_id, 'pass123'))
+        c.execute("SELECT id, name, role FROM users WHERE id = %s AND password = %s", (user_id, 'pass123'))
         result = c.fetchone()
         if result:
             print(f"  ✓ Direct query for {user_id}: SUCCESS - {dict(result)}")

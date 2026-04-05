@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
-import sqlite3
+import psycopg2
+import os
+from dotenv import load_dotenv
 
-db_path = "exam_system.db"
+load_dotenv()
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
 try:
-    conn = sqlite3.connect(db_path)
+    conn = psycopg2.connect(DATABASE_URL)
     c = conn.cursor()
     
     # Check all users with passwords

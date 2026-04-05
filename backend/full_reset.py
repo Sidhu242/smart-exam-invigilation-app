@@ -1,26 +1,25 @@
-import sqlite3
+import psycopg2
 import os
+from dotenv import load_dotenv
 
-DATABASE = 'exam_system.db'
+load_dotenv()
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
 def reset_all_data():
-    if not os.path.exists(DATABASE):
-        print(f"Error: {DATABASE} not found.")
-        return
-
-    conn = sqlite3.connect(DATABASE)
+    conn = psycopg2.connect(DATABASE_URL)
     c = conn.cursor()
 
     print("Resetting all exam data...")
     
     # Tables to clear
-    tables = ['exams', 'questions', 'student_answers', 'warnings', 'exam_results']
+    tables = ['exams', 'questions', 'student_answers', 'warnings', 'exam_results', 'violations']
     
     for table in tables:
         try:
-            c.execute(f"DELETE FROM {table}")
+            c.execute(f"DELETE FROM {table} CASCADE")
             print(f"  - Cleared table: {table}")
-        except sqlite3.OperationalError as e:
+        except Exception as e:
+            conn.rollback()
             print(f"  - skip: {table} (not found or error: {e})")
 
     conn.commit()

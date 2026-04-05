@@ -1,19 +1,22 @@
 #!/usr/bin/env python3
-import sqlite3
+import psycopg2
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
 # Test the database connection and schema
-db_path = "exam_system.db"
-
 try:
-    conn = sqlite3.connect(db_path)
+    conn = psycopg2.connect(DATABASE_URL)
     c = conn.cursor()
     
     # Check users table schema
-    c.execute("PRAGMA table_info(users)")
+    c.execute("SELECT column_name, data_type FROM information_schema.columns WHERE table_name = 'users'")
     users_columns = c.fetchall()
     print("Users table columns:")
     for col in users_columns:
-        print(f"  - {col[1]} ({col[2]})")
+        print(f"  - {col[0]} ({col[1]})")
     
     # Check if dummy users exist
     c.execute("SELECT id, name, role, institution FROM users")

@@ -1,17 +1,20 @@
-import sqlite3
+import psycopg2
+from psycopg2.extras import RealDictCursor
+import os
+from dotenv import load_dotenv
 
-DB_NAME = "exam.db"
+load_dotenv()
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
 def get_connection():
-    conn = sqlite3.connect(DB_NAME)
-    conn.row_factory = sqlite3.Row
+    conn = psycopg2.connect(DATABASE_URL)
     return conn
 
 # --- STUDENTS ---
 def get_student(student_id, password):
     conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM students WHERE id=? AND password=?", (student_id, password))
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+    cursor.execute("SELECT * FROM students WHERE id=%s AND password=%s", (student_id, password))
     result = cursor.fetchone()
     conn.close()
     return dict(result) if result else None
@@ -19,8 +22,8 @@ def get_student(student_id, password):
 # --- TEACHERS ---
 def get_teacher(teacher_id, password):
     conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM teachers WHERE id=? AND password=?", (teacher_id, password))
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+    cursor.execute("SELECT * FROM teachers WHERE id=%s AND password=%s", (teacher_id, password))
     result = cursor.fetchone()
     conn.close()
     return dict(result) if result else None
@@ -28,7 +31,7 @@ def get_teacher(teacher_id, password):
 # --- EXAMS ---
 def get_exams():
     conn = get_connection()
-    cursor = conn.cursor()
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
     cursor.execute("SELECT * FROM exams")
     result = cursor.fetchall()
     conn.close()
@@ -37,8 +40,8 @@ def get_exams():
 # --- QUESTIONS ---
 def get_questions(exam_id, limit=10):
     conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM questions WHERE exam_id=? ORDER BY RANDOM() LIMIT ?", (exam_id, limit))
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+    cursor.execute("SELECT * FROM questions WHERE exam_id=%s ORDER BY RANDOM() LIMIT %s", (exam_id, limit))
     result = cursor.fetchall()
     conn.close()
     return [dict(r) for r in result]
@@ -47,7 +50,7 @@ def get_questions(exam_id, limit=10):
 def save_exam_submission(student_id, exam_id, answers):
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO submissions(student_id, exam_id, answers) VALUES(?, ?, ?)",
+    cursor.execute("INSERT INTO submissions(student_id, exam_id, answers) VALUES(%s, %s, %s)",
                    (student_id, exam_id, str(answers)))
     conn.commit()
     conn.close()
