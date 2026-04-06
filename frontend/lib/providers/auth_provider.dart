@@ -20,8 +20,8 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<bool> register(
-      String name, String email, String password, String role) async {
-    final success = await _apiService.register(name, email, password, role);
+      String name, String id, String password, String role, String institution) async {
+    final success = await _apiService.register(name, id, password, role, institution);
     notifyListeners();
     return success;
   }

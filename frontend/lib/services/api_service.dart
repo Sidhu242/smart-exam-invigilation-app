@@ -39,28 +39,41 @@ class ApiService {
     return await http.get(Uri.parse('$baseUrl$path'), headers: headers);
   }
 
-  Future<bool> login(String email, String password) async {
+  Future<bool> login(String id, String password) async {
     final response = await _post('/login', {
-      'username': email,
+      'id': id,
       'password': password,
     });
     if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      await setToken(data['access_token']);
-      return true;
+      final jsonResponse = jsonDecode(response.body);
+      // Aligned with backend: Checks "success" field and gets token from "data"
+      if (jsonResponse['success'] == true && jsonResponse['data'] != null) {
+        final token = jsonResponse['data']['token'];
+        if (token != null) {
+          await setToken(token);
+          return true;
+        }
+      }
     }
     return false;
   }
 
   Future<bool> register(
-      String name, String email, String password, String role) async {
-    final response = await _post('/register', {
+      String name, String id, String password, String role, String institution) async {
+    // Aligned with backend: Changed /register to /signup and used correct fields
+    final response = await _post('/signup', {
       'name': name,
-      'email': email,
+      'id': id,
       'password': password,
       'role': role,
+      'institution': institution,
     });
-    return response.statusCode == 200;
+    
+    if (response.statusCode == 201) {
+      final jsonResponse = jsonDecode(response.body);
+      return jsonResponse['success'] == true;
+    }
+    return false;
   }
 
   Future<bool> sendFlag(Map<String, dynamic> flagData) async {

@@ -22,7 +22,8 @@ class AuthService {
         body: {'id': id, 'password': password},
       );
 
-      if (response['status'] == 'success') {
+      // Aligned with backend: Checks "success" boolean instead of "status" string
+      if (response['success'] == true) {
         return response;
       } else {
         throw AuthException(message: response['message'] ?? 'Login failed');
@@ -61,7 +62,8 @@ class AuthService {
         },
       );
 
-      if (response['status'] == 'success') {
+      // Aligned with backend: Checks "success" boolean instead of "status" string
+      if (response['success'] == true) {
         return response;
       } else {
         throw AuthException(message: response['message'] ?? 'Signup failed');
