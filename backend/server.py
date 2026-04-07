@@ -3,7 +3,6 @@ import random
 import datetime
 import jwt
 import bcrypt
-import uuid
 import sys
 from flask import Flask, request, jsonify
 from flask_cors import CORS
@@ -105,7 +104,7 @@ def signup():
 
         # Hash password (keep hashing logic as requested, store in "password" column)
         salt = bcrypt.gensalt()
-        hashed_password = bcrypt.hashpw(password_text.encode('utf-8'), salt).decode('utf-8')
+        password_hash = bcrypt.hashpw(password_text.encode('utf-8'), salt).decode('utf-8')
 
         conn = get_db_connection()
         cur = conn.cursor()
@@ -126,7 +125,7 @@ def signup():
             VALUES (%s, %s, %s, %s, %s)
         """
         log_event("DB QUERY", insert_query, f"id={user_id}, name={name}")
-        cur.execute(insert_query, (user_id, name, hashed_password, role, institution))
+        cur.execute(insert_query, (user_id, name, password_hash, role, institution))
         
         conn.commit()
         cur.close()
@@ -172,8 +171,14 @@ def login():
             log_event("ERROR", "User not found", f"id={user_id}")
             return app_response(False, 'Invalid ID or password', None, 401)
 
-        # Verify against hashed password in "password" column
-        if not bcrypt.checkpw(password_text.encode('utf-8'), user['password'].encode('utf-8')):
+        # Verify password (with fallback for legacy plaintext passwords)
+        try:
+            is_valid = bcrypt.checkpw(password_text.encode('utf-8'), user['password'].encode('utf-8'))
+        except (ValueError, TypeError, Exception):
+            # Fallback for legacy plaintext passwords
+            is_valid = (password_text == user['password'])
+
+        if not is_valid:
             log_event("ERROR", "Invalid password", f"id={user_id}")
             return app_response(False, 'Invalid ID or password', None, 401)
 

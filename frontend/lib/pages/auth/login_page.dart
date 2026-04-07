@@ -40,13 +40,19 @@ class _LoginPageState extends State<LoginPage> {
         _passwordController.text.trim(),
       );
 
+      print('API Response: $response');
+
+      final data = response['data'] ?? response; // Unpack data payload natively
+      final String parsedRole = (data['role']?.toString() ?? '').toLowerCase();
+      print('Parsed Role: $parsedRole');
+
       if (!mounted) return;
 
       // Save to global state
-      GlobalState.userId = response['id'] ?? '';
-      GlobalState.userName = response['name'] ?? '';
-      GlobalState.userRole = response['role'] ?? '';
-      GlobalState.institution = response['institution'] ?? '';
+      GlobalState.userId = data['id']?.toString() ?? '';
+      GlobalState.userName = data['name']?.toString() ?? '';
+      GlobalState.userRole = parsedRole;
+      GlobalState.institution = data['institution']?.toString() ?? '';
 
       // Persist session
       final prefs = await SharedPreferences.getInstance();
@@ -55,12 +61,14 @@ class _LoginPageState extends State<LoginPage> {
       await prefs.setString('userRole', GlobalState.userRole);
       await prefs.setString('institution', GlobalState.institution);
 
+      if (!mounted) return;
+
       // Navigate based on role
-      if (response['role'] == 'student') {
+      if (parsedRole == 'student') {
         context.go(
           '/student_home?studentId=${Uri.encodeComponent(GlobalState.userId)}&studentName=${Uri.encodeComponent(GlobalState.userName)}',
         );
-      } else if (response['role'] == 'teacher') {
+      } else if (parsedRole == 'teacher') {
         context.go(
           '/teacher_home?teacherId=${Uri.encodeComponent(GlobalState.userId)}&teacherName=${Uri.encodeComponent(GlobalState.userName)}',
         );
