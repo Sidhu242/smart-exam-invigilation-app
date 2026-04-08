@@ -55,20 +55,77 @@ class _StudentHomePageState extends State<StudentHomePage> {
 
   Future<void> _loadData() async {
     try {
+      debugPrint('[StudentHome] Loading exams for institution: "${GlobalState.institution}" (isNotEmpty: ${GlobalState.institution.isNotEmpty})');
       final exams = await _examService.getExams(
         institution: GlobalState.institution,
         published: true,
       );
-      final summary = await _submissionService.getSummary(widget.studentId);
+
+      Map<String, dynamic> rawSummary;
+      try {
+        rawSummary = await _submissionService.getSummary(widget.studentId);
+      } catch (_) {
+        rawSummary = {
+          'total_exams_taken': 0,
+          'average_score': 0.0,
+          'best_score': 0.0,
+          'worst_score': 0.0,
+          'exams': [],
+        };
+      }
+
+      // Build UI-friendly keys from raw backend summary
+      final submittedExamIds = (rawSummary['exams'] as List<dynamic>?)?.map((e) => e['exam_id']).toSet() ?? {};
+      final completedExams = exams.where((e) => submittedExamIds.contains(e['id'])).toList();
+      final finishedExams = exams.where((e) => e['status'] == 'closed').toList();
+
+      // Build performance data points for chart
+      final performanceData = (rawSummary['exams'] as List<dynamic>?)?.asMap().entries.map((entry) {
+        return {'x': (entry.key + 1).toString(), 'y': (entry.value['score'] ?? 0).toString()};
+      }).toList() ?? [];
+
+      // Build recent activity from exam submissions
+      final recentActivity = (rawSummary['exams'] as List<dynamic>?)?.take(5).map((e) {
+        return {
+          'text': 'Completed ${e['exam_name'] ?? 'exam'} - Score: ${(e['score'] ?? 0)}%',
+          'time': e['submitted_at'] != null ? DateTime.now().difference(DateTime.parse(e['submitted_at'].toString())).inHours.toString() + ' hours ago' : 'Unknown',
+        };
+      }).toList() ?? [];
 
       if (mounted) {
+        debugPrint('[StudentHome] Got ${_exams.length} exams');
         setState(() {
           _exams = exams;
-          _summary = summary;
+          _summary = {
+            'completed_exams': completedExams.length,
+            'accuracy': (rawSummary['average_score'] ?? 0).toStringAsFixed(1),
+            'average_score': rawSummary['average_score'] ?? 0,
+            'best_score': rawSummary['best_score'] ?? 0,
+            'total_exams_taken': rawSummary['total_exams_taken'] ?? 0,
+            'warnings': 0,
+            'last_warning': null,
+            'past_exams': (() {
+              final rawExams = rawSummary['exams'] as List<dynamic>? ?? [];
+              return finishedExams.map((e) {
+                final match = rawExams.firstWhere(
+                  (s) => s['exam_id'] == e['id'],
+                  orElse: () => {'score': 0},
+                );
+                return {
+                  'name': e['name'] ?? 'Untitled',
+                  'date': e['exam_datetime'] ?? 'Unknown',
+                  'score': match['score'] ?? 0,
+                };
+              }).toList();
+            })(),
+            'performance_data': performanceData,
+            'recent_activity': recentActivity,
+          };
           _isLoading = false;
         });
       }
     } catch (e) {
+      debugPrint('Error loading data: $e');
       if (mounted) setState(() => _isLoading = false);
     }
   }
@@ -576,13 +633,12 @@ class _StudentHomePageState extends State<StudentHomePage> {
   // ===========================================================================
 
   Widget _buildUpcomingExamsSection() {
-    final activeExams = _exams.where((e) => e['status'] != 'finished').toList();
-    final finishedExams = _exams.where((e) => e['status'] == 'finished').toList();
+    final activeExams = _exams.where((e) => e['status'] != 'closed').toList();
+    final finishedExams = _exams.where((e) => e['status'] == 'closed').toList();
 
     return Column(
       children: [
-        _buildCardWrapper(
-          title: "Upcoming Exams",
+        _buildCardWrapper(          title: "Upcoming Exams",
           actionText: "View All",
           actionOnTap: () => setState(() => _selectedIndex = 1),
           child: activeExams.isEmpty

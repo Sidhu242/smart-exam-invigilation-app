@@ -69,13 +69,13 @@ class BackendService {
   ) async {
     try {
       final response = await BackendService._instance._baseService.get(
-        '${AppConfig.GET_WARNINGS}?student_name=$studentName&exam_id=$examId',
+        '${AppConfig.GET_WARNINGS}?student_name=${Uri.encodeComponent(studentName)}&exam_id=${Uri.encodeComponent(examId)}',
       );
 
-      if (response['status'] == 'success') {
-        return response['warnings'] ?? [];
+      if (response['success'] == true) {
+        return response['data']['warnings'] ?? [];
       } else {
-        throw DataException(message: 'Failed to fetch warnings');
+        throw DataException(message: response['message'] ?? 'Failed to fetch warnings');
       }
     } catch (e) {
       if (e is AppException) rethrow;

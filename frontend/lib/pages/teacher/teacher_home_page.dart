@@ -61,7 +61,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
       }
 
       if (mounted) {
-        final active = exams.where((e) => e['status'] != 'finished').length;
+        final active = exams.where((e) => e['status'] != 'closed').length;
         setState(() {
           _exams = exams;
           _stats['total_exams'] = exams.length;
@@ -535,8 +535,8 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
   // _monitoringTile removed as it was unused
 
   Widget _buildRecentExamsSection() {
-    final activeExams = _exams.where((e) => e['status'] != 'finished').toList();
-    final finishedExams = _exams.where((e) => e['status'] == 'finished').toList();
+    final activeExams = _exams.where((e) => e['status'] != 'closed').toList();
+    final finishedExams = _exams.where((e) => e['status'] == 'closed').toList();
 
     return Column(
       children: [
@@ -827,7 +827,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
   }
 
   Widget _buildLiveMonitoringSelect(bool isDesktop) {
-    final activeExams = _exams.where((e) => e['status'] != 'finished').toList();
+    final activeExams = _exams.where((e) => e['status'] != 'closed').toList();
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(32),

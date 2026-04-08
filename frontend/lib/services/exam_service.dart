@@ -20,10 +20,10 @@ class ExamService {
         '${AppConfig.GET_EXAMS}?institution=${Uri.encodeComponent(institution.trim())}&published=${published ? '1' : '0'}',
       );
 
-      if (response['status'] == 'success') {
-        return response['exams'] ?? [];
+      if (response['success'] == true) {
+        return response['data']['exams'] ?? [];
       } else {
-        throw DataException(message: 'Failed to fetch exams');
+        throw DataException(message: response['message'] ?? 'Failed to fetch exams');
       }
     } catch (e) {
       if (e is AppException) rethrow;
@@ -38,10 +38,10 @@ class ExamService {
         '${AppConfig.GET_ALL_EXAMS}?institution=${Uri.encodeComponent(institution.trim())}',
       );
 
-      if (response['status'] == 'success') {
-        return response['exams'] ?? [];
+      if (response['success'] == true) {
+        return response['data']['exams'] ?? [];
       } else {
-        throw DataException(message: 'Failed to fetch exams');
+        throw DataException(message: response['message'] ?? 'Failed to fetch exams');
       }
     } catch (e) {
       if (e is AppException) rethrow;
@@ -60,10 +60,10 @@ class ExamService {
         '${AppConfig.GET_QUESTIONS}/$examId',
       );
 
-      if (response['status'] == 'success') {
-        return response['questions'] ?? [];
+      if (response['success'] == true) {
+        return response['data']['questions'] ?? [];
       } else {
-        throw DataException(message: AppStrings.EXAM_LOAD_FAILED);
+        throw DataException(message: response['message'] ?? AppStrings.EXAM_LOAD_FAILED);
       }
     } catch (e) {
       if (e is AppException) rethrow;

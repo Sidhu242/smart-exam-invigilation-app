@@ -28,7 +28,7 @@ class SubmissionService {
         },
       );
 
-      return response['status'] == 'success';
+      return response['success'] == true;
     } catch (e) {
       if (e is AppException) rethrow;
       throw NetworkException(message: e.toString());
@@ -63,10 +63,10 @@ class SubmissionService {
         '${AppConfig.GET_SUMMARY}/$studentId',
       );
 
-      if (response['status'] == 'success') {
-        return response['summary'] ?? {};
+      if (response['success'] == true) {
+        return response['data']['summary'] ?? {};
       } else {
-        throw DataException(message: 'Failed to fetch summary');
+        throw DataException(message: response['message'] ?? 'Failed to fetch summary');
       }
     } catch (e) {
       if (e is AppException) rethrow;
@@ -81,10 +81,10 @@ class SubmissionService {
         '${AppConfig.GET_EXAM_RESULTS}/$examId',
       );
 
-      if (response['status'] == 'success') {
-        return response['results'] ?? [];
+      if (response['success'] == true) {
+        return response['data']['results'] ?? [];
       } else {
-        throw DataException(message: 'Failed to fetch results');
+        throw DataException(message: response['message'] ?? 'Failed to fetch results');
       }
     } catch (e) {
       if (e is AppException) rethrow;
@@ -99,10 +99,10 @@ class SubmissionService {
         '/get_warnings/$examId',
       );
 
-      if (response['status'] == 'success') {
-        return response['warnings'] ?? [];
+      if (response['success'] == true) {
+        return response['data']['warnings'] ?? [];
       } else {
-        throw DataException(message: 'Failed to fetch violations');
+        throw DataException(message: response['message'] ?? 'Failed to fetch violations');
       }
     } catch (e) {
       if (e is AppException) rethrow;

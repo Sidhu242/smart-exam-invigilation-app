@@ -47,20 +47,35 @@ class _ScheduleExamPageState extends State<ScheduleExamPage> {
         _selectedTime!.minute,
       );
 
-      final institution = GlobalState.institution.isNotEmpty 
-          ? GlobalState.institution 
-          : 'Standard Institution'; // Fallback to avoid 400
+      debugPrint('[ScheduleExam] GlobalState.institution: "${GlobalState.institution}"');
+      final institution = GlobalState.institution.isNotEmpty
+          ? GlobalState.institution
+          : 'Test School';
+      debugPrint('[ScheduleExam] Using institution: "$institution"');
 
+      final examId = _generateExamId();
       await _examService.createExam(
-        id: _generateExamId(),
+        id: examId,
         name: _examNameController.text,
         dateTime: dateTime.toString().split('.')[0],
         institution: institution,
       );
 
+      try {
+        await _examService.publishExam(examId);
+      } catch (e) {
+        debugPrint('Error publishing exam: $e');
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Exam created but failed to publish: $e')),
+          );
+        }
+        return;
+      }
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Exam created!')),
+          const SnackBar(content: Text('Exam created and published!')),
         );
         context.go('/manage_exams');
       }
